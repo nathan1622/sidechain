@@ -1,319 +1,89 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sidechain</title>
-  <meta name="description" content="We plug in where complexity starts." />
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  <meta property="og:title" content="Sidechain" />
-  <meta property="og:description" content="We plug in where complexity starts." />
-  <meta property="og:type" content="website" />
+html, body {
+  height: 100%;
+  background: #000;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Helvetica Neue", Arial, sans-serif;
+}
 
-  <style>
-    :root{
-      --bg:#0b0b0b;
-      --fg:#ffffff;
-      --muted:rgba(255,255,255,.70);
-      --subtle:rgba(255,255,255,.12);
-      --card:rgba(255,255,255,.06);
-      --max:980px;
-      --radius:16px;
-    }
+/* Layout */
+.hero {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px;
+}
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      background:var(--bg);
-      color:var(--fg);
-      font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      letter-spacing:0.01em;
-    }
+/* Typography */
+.brand {
+  font-size: clamp(48px, 8vw, 96px);
+  letter-spacing: 0.15em;
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: fadeUp 1s ease-out forwards;
+}
 
-    a{color:inherit; text-decoration:none}
-    .wrap{min-height:100%; display:flex; justify-content:center}
-    .container{width:100%; max-width:var(--max); padding:28px 22px 56px}
+.line {
+  max-width: 900px;
+  font-size: clamp(16px, 2vw, 20px);
+  color: #bdbdbd;
+  line-height: 1.6;
+  opacity: 0;
+}
 
-    /* Top bar */
-    .top{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:8px 0 26px;
-      opacity:.9;
-    }
-    .brand{
-      font-weight:650;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      font-size:13px;
-    }
-    .nav{
-      display:flex; gap:14px;
-      font-size:13px;
-      color:var(--muted);
-    }
-    .nav a{padding:8px 10px; border-radius:999px}
-    .nav a:hover{background:var(--card); color:var(--fg)}
+.line-1 {
+  animation: fadeUp 1s ease-out forwards;
+  animation-delay: 0.3s;
+}
 
-    /* Hero */
-    .hero{
-      padding:86px 0 46px;
-      text-align:center;
-    }
-    .kicker{
-      display:inline-flex;
-      gap:10px;
-      align-items:center;
-      padding:8px 12px;
-      border:1px solid var(--subtle);
-      border-radius:999px;
-      color:var(--muted);
-      font-size:12px;
-      margin-bottom:22px;
-      backdrop-filter: blur(8px);
-    }
-    .dot{width:6px;height:6px;border-radius:99px;background:rgba(255,255,255,.55)}
-    h1{
-      margin:0 0 10px;
-      font-size:48px;
-      letter-spacing:.22em;
-      text-transform:uppercase;
-      line-height:1.05;
-    }
-    .tagline{
-      margin:0 auto;
-      max-width:620px;
-      font-size:18px;
-      color:var(--muted);
-      line-height:1.55;
-    }
+.line-2 {
+  margin-top: 16px;
+  animation: fadeUp 1s ease-out forwards;
+  animation-delay: 0.6s;
+}
 
-    .ctaRow{
-      margin-top:26px;
-      display:flex;
-      justify-content:center;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      height:44px;
-      padding:0 16px;
-      border-radius:12px;
-      border:1px solid var(--subtle);
-      background:transparent;
-      color:var(--fg);
-      font-size:13px;
-    }
-    .btn:hover{background:var(--card)}
-    .btn.primary{
-      background:var(--fg);
-      color:#0b0b0b;
-      border-color:transparent;
-    }
-    .btn.primary:hover{filter:brightness(.95)}
+/* Contact */
+.contact {
+  margin-top: 56px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  opacity: 0;
+  animation: fadeUp 1s ease-out forwards;
+  animation-delay: 0.9s;
+}
 
-    /* Sections */
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:14px;
-      margin-top:20px;
-    }
-    .card{
-      border:1px solid var(--subtle);
-      background:rgba(255,255,255,.03);
-      border-radius:var(--radius);
-      padding:18px 18px 16px;
-      min-height:120px;
-    }
-    .card h3{
-      margin:0 0 8px;
-      font-size:14px;
-      letter-spacing:.04em;
-    }
-    .card p{
-      margin:0;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.55;
-    }
+.contact p {
+  color: #888;
+  margin-bottom: 8px;
+}
 
-    .section{
-      margin-top:44px;
-      border-top:1px solid var(--subtle);
-      padding-top:34px;
-    }
-    .section h2{
-      margin:0 0 10px;
-      font-size:15px;
-      letter-spacing:.06em;
-      text-transform:uppercase;
-      color:rgba(255,255,255,.86);
-    }
-    .twoCol{
-      display:grid;
-      grid-template-columns: 1.25fr .75fr;
-      gap:18px;
-      align-items:start;
-    }
-    .lead{
-      margin:0;
-      color:var(--muted);
-      line-height:1.7;
-      font-size:14px;
-      max-width:720px;
-    }
+.contact a {
+  color: #fff;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+}
 
-    .list{
-      border:1px solid var(--subtle);
-      border-radius:var(--radius);
-      background:rgba(255,255,255,.03);
-      padding:16px;
-    }
-    .listItem{
-      padding:10px 8px;
-      border-bottom:1px solid rgba(255,255,255,.10);
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.5;
-    }
-    .listItem:last-child{border-bottom:none}
+.contact a:hover {
+  border-bottom-color: #fff;
+}
 
-    /* Footer / contact */
-    .contact{
-      margin-top:44px;
-      border:1px solid var(--subtle);
-      border-radius:var(--radius);
-      padding:20px;
-      background:rgba(255,255,255,.03);
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      text-align:center;
-    }
-    .contact strong{
-      font-size:16px;
-      letter-spacing:.02em;
-    }
-    .contact span{color:var(--muted); font-size:13px; line-height:1.6}
-
-    /* Micro animation */
-    .reveal{
-      opacity:0;
-      transform: translateY(10px);
-      filter: blur(6px);
-      transition: opacity 900ms ease, transform 900ms ease, filter 900ms ease;
-      will-change: opacity, transform, filter;
-    }
-    .reveal.show{
-      opacity:1;
-      transform: translateY(0);
-      filter: blur(0);
-    }
-    .reveal.delay1{transition-delay:120ms}
-    .reveal.delay2{transition-delay:240ms}
-    .reveal.delay3{transition-delay:360ms}
-    .reveal.delay4{transition-delay:480ms}
-
-    @media (max-width: 860px){
-      h1{font-size:40px}
-      .grid{grid-template-columns:1fr}
-      .twoCol{grid-template-columns:1fr}
-      .hero{padding:72px 0 34px}
-    }
-    @media (prefers-reduced-motion: reduce){
-      .reveal{transition:none; opacity:1; transform:none; filter:none}
-    }
-  </style>
-</head>
-
-<body>
-  <div class="wrap">
-    <div class="container">
-
-      <div class="top">
-        <div class="brand">Sidechain</div>
-        <div class="nav">
-          <a href="#what">What we do</a>
-          <a href="#how">How we work</a>
-          <a href="#start">Start</a>
-        </div>
-      </div>
-
-      <section class="hero">
-        <div class="kicker reveal show">
-          <span class="dot"></span>
-          Technical depth, on demand
-        </div>
-
-        <h1 class="reveal delay1">SIDECHAIN</h1>
-
-        <p class="tagline reveal delay2">
-          We plug in where complexity starts.
-          We bring the right people together, aligned to the task, with calm structure and clear direction.
-        </p>
-
-        <div class="ctaRow reveal delay3">
-          <a class="btn primary" href="mailto:hello@sidechain.global">Email</a>
-          <a class="btn" href="#how">How it works</a>
-        </div>
-
-        <div class="grid reveal delay4" id="what">
-          <div class="card">
-            <h3>People</h3>
-            <p>Curated specialists who fit the job, the room, and the moment.</p>
-          </div>
-          <div class="card">
-            <h3>Systems</h3>
-            <p>Quiet structure that removes friction, not creativity.</p>
-          </div>
-          <div class="card">
-            <h3>Direction</h3>
-            <p>Decisive technical leadership when timelines and stakes rise.</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="how">
-        <h2>How we work</h2>
-        <div class="twoCol">
-          <p class="lead">
-            Sidechain plugs into existing teams when process no longer keeps up with reality.
-            We map what matters, assemble the right expertise, and ship with minimal overhead.
-          </p>
-
-          <div class="list">
-            <div class="listItem"><strong style="color:#fff">1.</strong> Quick intake and scope</div>
-            <div class="listItem"><strong style="color:#fff">2.</strong> Curate people and plan</div>
-            <div class="listItem"><strong style="color:#fff">3.</strong> Execute, document, hand over</div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="start">
-        <div class="contact">
-          <strong>Start a conversation.</strong>
-          <span>
-            When clarity is required and time matters, reach us at
-            <a href="mailto:hello@sidechain.global" style="color:#fff; text-decoration:underline">hello@sidechain.global</a>
-          </span>
-          <div class="ctaRow" style="margin-top:6px">
-            <a class="btn primary" href="mailto:hello@sidechain.global">Contact Sidechain</a>
-          </div>
-        </div>
-      </section>
-
-    </div>
-  </div>
-
-  <script>
-    // Reveal animation on load for everything with .reveal
-    window.addEventListener("load", () => {
-      document.querySelectorAll(".reveal").forEach((el) => el.classList.add("show"));
-    });
-  </script>
-</body>
-</html>
+/* Animation */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
