@@ -1,89 +1,61 @@
-/* Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-html, body {
-  height: 100%;
-  background: #000;
-  color: #fff;
-  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Helvetica Neue", Arial, sans-serif;
-}
+  <title>Sidechain</title>
+  <meta name="description" content="We plug in where complexity starts." />
 
-/* Layout */
-.hero {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 40px;
-}
+  <meta property="og:title" content="Sidechain" />
+  <meta property="og:description" content="We plug in where complexity starts." />
+  <meta property="og:type" content="website" />
 
-/* Typography */
-.brand {
-  font-size: clamp(48px, 8vw, 96px);
-  letter-spacing: 0.15em;
-  margin-bottom: 32px;
-  opacity: 0;
-  animation: fadeUp 1s ease-out forwards;
-}
+  <link rel="stylesheet" href="style.css" />
+</head>
 
-.line {
-  max-width: 900px;
-  font-size: clamp(16px, 2vw, 20px);
-  color: #bdbdbd;
-  line-height: 1.6;
-  opacity: 0;
-}
+<body>
+  <main class="hero">
+    <!-- Subtle background routing lines (very soft) -->
+    <div class="bgLines" aria-hidden="true">
+      <svg viewBox="0 0 1000 420" preserveAspectRatio="none">
+        <path class="route r1" d="M-10 120 C210 120, 280 160, 430 210 C520 240, 590 245, 640 240" />
+        <path class="route r2" d="M-10 190 C220 190, 290 205, 430 235 C520 260, 585 260, 640 250" />
+        <path class="route r3" d="M-10 260 C230 260, 300 250, 430 245 C520 240, 585 230, 640 220" />
 
-.line-1 {
-  animation: fadeUp 1s ease-out forwards;
-  animation-delay: 0.3s;
-}
+        <!-- S spine -->
+        <path class="route spine" d="M640 235
+          C720 180, 820 185, 900 230
+          C965 265, 965 335, 900 360
+          C820 390, 720 375, 660 335
+          C610 300, 625 260, 675 245
+          C750 220, 830 220, 900 240" />
 
-.line-2 {
-  margin-top: 16px;
-  animation: fadeUp 1s ease-out forwards;
-  animation-delay: 0.6s;
-}
+        <circle class="node n1" cx="640" cy="240" r="4" />
+        <circle class="node n2" cx="640" cy="250" r="3.4" />
+        <circle class="node n3" cx="640" cy="220" r="3.2" />
+      </svg>
+    </div>
 
-/* Contact */
-.contact {
-  margin-top: 56px;
-  padding-top: 24px;
-  border-top: 1px solid rgba(255,255,255,0.1);
-  opacity: 0;
-  animation: fadeUp 1s ease-out forwards;
-  animation-delay: 0.9s;
-}
+    <h1 class="brand">SIDECHAIN</h1>
 
-.contact p {
-  color: #888;
-  margin-bottom: 8px;
-}
+    <p class="line line-1">
+      We plug in where complexity starts.
+    </p>
 
-.contact a {
-  color: #fff;
-  text-decoration: none;
-  border-bottom: 1px solid rgba(255,255,255,0.3);
-}
+    <p class="line line-2">
+      We bring the right people together, aligned to the task,<br />
+      with calm structure and clear direction.
+    </p>
 
-.contact a:hover {
-  border-bottom-color: #fff;
-}
+    <div class="contact">
+      <p class="contactTitle">Start a conversation.</p>
+      <a class="contactMail" href="mailto:hello@sidechain.global">hello@sidechain.global</a>
 
-/* Animation */
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+      <div class="contactCta">
+        <a class="btn" href="mailto:hello@sidechain.global">Contact Sidechain</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
