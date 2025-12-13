@@ -1,7 +1,3 @@
-/* ================================
-   Cinematic reveal animations
-   ================================ */
-
 .reveal {
   opacity: 0;
   transform: translateY(28px);
