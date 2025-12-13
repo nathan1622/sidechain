@@ -1,8 +1,8 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sidechain</title>
   <meta name="description" content="We plug in where complexity starts." />
 
@@ -10,19 +10,53 @@
   <meta property="og:description" content="We plug in where complexity starts." />
   <meta property="og:type" content="website" />
 
-  <style>
-    body{margin:0;background:#0b0b0b;color:#fff;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-    .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px}
-    h1{letter-spacing:.14em;margin:0 0 12px 0;font-size:40px}
-    p{margin:0;opacity:.75;font-size:16px}
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-  <div class="wrap">
-    <div>
-      <h1>SIDECHAIN</h1>
-      <p>We plug in where complexity starts.</p>
+  <main class="hero">
+    <div class="bgLines" aria-hidden="true">
+      <svg viewBox="0 0 1000 420" preserveAspectRatio="none">
+        <path class="route r1" d="M-10 120 C210 120, 280 160, 430 210 C520 240, 590 245, 640 240" />
+        <path class="route r2" d="M-10 190 C220 190, 290 205, 430 235 C520 260, 585 260, 640 250" />
+        <path class="route r3" d="M-10 260 C230 260, 300 250, 430 245 C520 240, 585 230, 640 220" />
+
+        <path class="route spine" d="M640 235
+          C720 180, 820 185, 900 230
+          C965 265, 965 335, 900 360
+          C820 390, 720 375, 660 335
+          C610 300, 625 260, 675 245
+          C750 220, 830 220, 900 240" />
+
+        <circle class="node n1" cx="640" cy="240" r="4" />
+        <circle class="node n2" cx="640" cy="250" r="3.4" />
+        <circle class="node n3" cx="640" cy="220" r="3.2" />
+      </svg>
     </div>
-  </div>
+
+    <div class="kicker">
+      <span class="dot"></span>
+      Technical depth, on demand
+    </div>
+
+    <h1 class="brand">SIDECHAIN</h1>
+
+    <p class="tagline t1">We plug in where complexity starts.</p>
+
+    <p class="tagline t2">
+      We bring the right people together, aligned to the task,<br />
+      with calm structure and clear direction.
+    </p>
+
+    <div class="contact">
+      <p class="contactTitle">Start a conversation.</p>
+      <p class="contactText">
+        When clarity is required and time matters, reach us at
+        <a class="contactMail" href="mailto:hello@sidechain.global">hello@sidechain.global</a>
+      </p>
+
+      <a class="btn" href="mailto:hello@sidechain.global">Contact Sidechain</a>
+    </div>
+  </main>
 </body>
 </html>
