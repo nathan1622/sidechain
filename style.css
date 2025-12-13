@@ -1,68 +1,210 @@
-.reveal {
+/* Base */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root{
+  --bg: #000;
+  --fg: #fff;
+  --muted: rgba(255,255,255,.72);
+  --muted2: rgba(255,255,255,.58);
+  --stroke: rgba(255,255,255,.14);
+  --stroke2: rgba(255,255,255,.08);
+  --card: rgba(255,255,255,.06);
+  --cardBorder: rgba(255,255,255,.14);
+}
+
+html, body { height: 100%; background: var(--bg); color: var(--fg); }
+
+body{
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* Layout */
+.hero{
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  position: relative;
+  padding: 48px 20px;
+}
+
+.content{
+  width: min(980px, 92vw);
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+/* Background routing lines */
+.bgLines{
+  position: absolute;
+  inset: 0;
+  z-index: 1;
   opacity: 0;
-  transform: translateY(28px);
-  filter: blur(18px);
-  animation-name: revealSlow;
-  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-  animation-fill-mode: forwards;
-  will-change: opacity, transform, filter;
+  animation: bgIn 2.0s ease forwards;
+  animation-delay: 0.3s;
+  filter: blur(0.2px);
 }
 
-/* Timing layers */
-.reveal.r1 {
-  animation-duration: 2200ms;
-  animation-delay: 400ms;
+.bgLines svg{
+  width: 100%;
+  height: 100%;
 }
 
-.reveal.r2 {
-  animation-duration: 1800ms;
-  animation-delay: 2000ms;
+.route{
+  fill: none;
+  stroke: var(--stroke);
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: draw 5.2s cubic-bezier(.2,.8,.2,1) forwards;
+  animation-delay: 0.8s;
 }
 
-.reveal.r3 {
-  animation-duration: 1800ms;
-  animation-delay: 3200ms;
+.r2{ stroke: var(--stroke2); stroke-width: 7; animation-delay: 1.0s; }
+.r3{ stroke: rgba(255,255,255,.10); stroke-width: 6; animation-delay: 1.2s; }
+
+.node{
+  fill: rgba(255,255,255,.35);
+  opacity: 0;
+  transform-origin: center;
+  animation: nodePop 1.2s ease forwards;
 }
 
-.reveal.r4 {
-  animation-duration: 1600ms;
-  animation-delay: 4600ms;
-}
+.n1{ animation-delay: 5.3s; }
+.n2{ animation-delay: 5.6s; }
+.n3{ animation-delay: 5.9s; }
 
-/* Heavier entrance for SIDECHAIN */
-.brand.reveal.r1 {
-  transform: translateY(40px);
-  filter: blur(22px);
-  letter-spacing: 0.14em;
-}
+/* Typography reveal */
+.brand{
+  font-weight: 800;
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  font-size: clamp(40px, 8vw, 92px);
+  margin-bottom: 22px;
 
-/* Text feels lighter */
-.tagline.reveal {
-  transform: translateY(22px);
-  filter: blur(14px);
-}
-
-/* Contact should feel calm and grounded */
-.contact.reveal {
+  opacity: 0;
   transform: translateY(18px);
-  filter: blur(12px);
+  animation: riseFade 1.7s ease forwards;
+  animation-delay: 1.2s;
 }
 
-/* Keyframes */
-@keyframes revealSlow {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-  }
+.tagline{
+  max-width: 860px;
+  margin: 0 auto;
+  line-height: 1.35;
+}
+
+.t1{
+  font-size: clamp(18px, 2.3vw, 26px);
+  color: var(--muted);
+  opacity: 0;
+  transform: translateY(12px);
+  animation: riseFade 1.4s ease forwards;
+  animation-delay: 3.2s;
+}
+
+.t2{
+  font-size: clamp(18px, 2.1vw, 24px);
+  color: var(--muted2);
+  margin-top: 18px;
+  opacity: 0;
+  transform: translateY(12px);
+  animation: riseFade 1.4s ease forwards;
+  animation-delay: 4.6s;
+}
+
+/* Contact card */
+.contact{
+  margin: 54px auto 0;
+  width: min(920px, 92vw);
+  padding: 26px 22px;
+  border: 1px solid var(--cardBorder);
+  background: var(--card);
+  border-radius: 26px;
+  backdrop-filter: blur(10px);
+
+  opacity: 0;
+  transform: translateY(14px);
+  animation: riseFade 1.4s ease forwards;
+  animation-delay: 6.2s;
+}
+
+.contactTitle{
+  font-size: clamp(20px, 2.2vw, 30px);
+  margin-bottom: 10px;
+  letter-spacing: 0.02em;
+}
+
+.contactText{
+  font-size: clamp(15px, 1.8vw, 18px);
+  color: var(--muted);
+  margin-bottom: 18px;
+}
+
+.email{
+  border-bottom: 1px solid rgba(255,255,255,.35);
+  padding-bottom: 2px;
+}
+
+.email:hover{
+  border-bottom-color: rgba(255,255,255,.85);
+}
+
+.btn{
+  display: inline-block;
+  background: #fff;
+  color: #070707;
+  padding: 14px 22px;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 15px;
+  transition: transform .2s ease, filter .2s ease;
+}
+
+.btn:hover{ transform: translateY(-1px); filter: brightness(.96); }
+.btn:active{ transform: translateY(0px); }
+
+/* Animations */
+@keyframes bgIn{
+  from{ opacity: 0; }
+  to{ opacity: .55; }
+}
+
+@keyframes draw{
+  to{ stroke-dashoffset: 0; }
+}
+
+@keyframes riseFade{
+  to{ opacity: 1; transform: translateY(0); }
+}
+
+@keyframes nodePop{
+  0%{ opacity: 0; transform: scale(.7); }
+  60%{ opacity: .9; transform: scale(1.08); }
+  100%{ opacity: .65; transform: scale(1); }
+}
+
+/* Mobile tuning */
+@media (max-width: 720px){
+  .brand{ letter-spacing: 0.28em; }
+  .bgLines{ opacity: .45; }
+  .contact{ border-radius: 22px; }
 }
 
 /* Respect reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .reveal {
-    animation: none;
-    opacity: 1;
-    transform: none;
-    filter: none;
+@media (prefers-reduced-motion: reduce){
+  .bgLines, .route, .node, .brand, .t1, .t2, .contact{
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    stroke-dashoffset: 0 !important;
   }
 }
