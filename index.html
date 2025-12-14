@@ -1,55 +1,32 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sidechain</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
 
-    <title>Sidechain</title>
-    <meta name="description" content="We plug in where complexity starts. We bring the right people together, aligned to the task, with calm structure and clear direction." />
+  <!-- Fullscreen animated background -->
+  <canvas id="bg"></canvas>
 
-    <meta property="og:title" content="Sidechain" />
-    <meta property="og:description" content="We plug in where complexity starts. We bring the right people together, aligned to the task, with calm structure and clear direction." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://sidechain.global" />
+  <!-- Content layer -->
+  <main class="content">
+    <h1 class="logo">SIDECHAIN</h1>
 
-    <link rel="icon" href="/favicon.ico" />
-    <link rel="stylesheet" href="style.css?v=8" />
-  </head>
+    <p class="tagline">We plug in where complexity starts.</p>
+    <p class="sub">
+      We bring the right people together, aligned to the task, with calm structure and clear direction.
+    </p>
 
-  <body>
-    <main class="hero">
-      <div class="bgLines" aria-hidden="true">
-        <svg viewBox="0 0 1200 800" preserveAspectRatio="none">
-          <!-- incoming routes -->
-          <path class="route r1" d="M -40 180 C 260 120, 420 320, 640 400 C 760 440, 860 420, 930 410" />
-          <path class="route r2" d="M -40 310 C 260 260, 420 360, 650 410 C 780 440, 860 470, 930 465" />
-          <path class="route r3" d="M -40 470 C 260 520, 450 430, 660 430 C 790 430, 870 520, 930 520" />
+    <section class="card">
+      <h2>Start a conversation.</h2>
+      <p>When clarity is required and time matters, reach us at <span class="email">hello@sidechain.global</span></p>
+      <a class="btn" href="mailto:hello@sidechain.global">Contact Sidechain</a>
+    </section>
+  </main>
 
-          <!-- convergence nodes -->
-          <circle class="node n1" cx="935" cy="410" r="6" />
-          <circle class="node n2" cx="935" cy="465" r="6" />
-          <circle class="node n3" cx="935" cy="520" r="6" />
-        </svg>
-      </div>
-
-      <section class="content" aria-label="Sidechain landing">
-        <h1 class="brand">SIDECHAIN</h1>
-
-        <p class="tagline t1">We plug in where complexity starts.</p>
-        <p class="tagline t2">
-          We bring the right people together, aligned to the task, with calm structure and clear direction.
-        </p>
-
-        <div class="contact">
-          <h2 class="contactTitle">Start a conversation.</h2>
-          <p class="contactText">
-            When clarity is required and time matters, reach us at
-            <a class="email" href="mailto:hello@sidechain.global">hello@sidechain.global</a>
-          </p>
-
-          <a class="btn" href="mailto:hello@sidechain.global?subject=Sidechain%20inquiry">Contact Sidechain</a>
-        </div>
-      </section>
-    </main>
-  </body>
+  <script src="bg.js"></script>
+</body>
 </html>
