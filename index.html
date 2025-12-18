@@ -20,7 +20,7 @@
   <meta property="og:url" content="https://sidechain.global" />
 
   <link rel="icon" href="/favicon.ico" />
-  <link rel="stylesheet" href="style.css?v=2" />
+  <link rel="stylesheet" href="style.css?v=3" />
 </head>
 <body>
 
@@ -30,9 +30,9 @@
     <h1 class="wordmark reveal r1">SIDECHAIN</h1>
 
     <p class="tagline reveal r2">Plug in where complexity starts</p>
-    <p class="sub line1 reveal r3">Aligning the right people to the task</p>
-    <p class="sub line2 reveal r4">Calm structure</p>
-    <p class="sub line3 reveal r5">Clear direction</p>
+    <p class="sub reveal r3">Aligning the right people to the task</p>
+    <p class="sub reveal r4">Calm structure</p>
+    <p class="sub reveal r5">Clear direction</p>
 
     <section class="card reveal r6">
       <h2>Start a conversation.</h2>
@@ -40,7 +40,9 @@
         When clarity is required and time matters, reach us at
         <a class="email" href="mailto:hello@sidechain.global">hello@sidechain.global</a>
       </p>
-      <a class="btn" href="mailto:hello@sidechain.global?subject=Sidechain%20inquiry">Contact Sidechain</a>
+      <a class="btn" href="mailto:hello@sidechain.global?subject=Sidechain%20inquiry">
+        Contact Sidechain
+      </a>
 
       <p class="learning-tag">
         Learning happens where responsibility is real.
@@ -49,5 +51,13 @@
   </main>
 
   <script src="bg.js"></script>
+
+  <!-- Trigger animations only after full page load -->
+  <script>
+    window.addEventListener('load', () => {
+      document.documentElement.classList.add('is-loaded');
+    });
+  </script>
+
 </body>
 </html>
