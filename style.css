@@ -50,8 +50,8 @@ html, body {
 .tagline {
   margin: 0 0 14px;
   font-size: clamp(1.9rem, 4.2vw, 3.1rem);
-  font-weight: 800;
-  line-height: 2;
+  font-weight: 500;
+  line-height: 1,5;
   opacity: 1;
 }
 
