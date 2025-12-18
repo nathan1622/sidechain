@@ -48,9 +48,11 @@ html, body {
 }
 
 .tagline {
-  margin: 0 0 10px;
-  font-size: 18px;
-  opacity: 0.9;
+  margin: 0 0 14px;
+  font-size: clamp(1.9rem, 4.2vw, 3.1rem);
+  font-weight: 800;
+  line-height: 2;
+  opacity: 1;
 }
 
 .sub {
