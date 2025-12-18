@@ -96,3 +96,28 @@ html, body {
   text-decoration: none;
   font-weight: 700;
 }
+
+.sub {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: fadeUp 0.8s ease-out forwards;
+}
+
+.sub.line1 {
+  animation-delay: 0.4s;
+}
+
+.sub.line2 {
+  animation-delay: 0.8s;
+}
+
+.sub.line3 {
+  animation-delay: 1.2s;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
