@@ -102,19 +102,19 @@ html, body {
 .sub {
   opacity: 0;
   transform: translateY(8px);
-  animation: fadeUp 0.8s ease-out forwards;
+  animation: fadeUp 1.5s ease-out forwards;
 }
 
 .sub.line1 {
-  animation-delay: 0.4s;
-}
-
-.sub.line2 {
   animation-delay: 0.8s;
 }
 
+.sub.line2 {
+  animation-delay: 1.6s;
+}
+
 .sub.line3 {
-  animation-delay: 1.2s;
+  animation-delay: 2.4s;
 }
 
 @keyframes fadeUp {
