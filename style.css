@@ -120,11 +120,3 @@ html, body {
     opacity: 1;
     transform: translateY(0);
   }
-}
-.tagline {
-  font-size: clamp(2.2rem, 5vw, 3.6rem);
-  font-weight: 500;
-  line-height: 1.15;
-  margin-bottom: 1.2rem;
-}
-
