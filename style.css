@@ -1,23 +1,19 @@
 /* =========================
-   Base reset
+   Base
    ========================= */
 
 *,
 *::before,
-*::after {
-  box-sizing: border-box;
-}
+*::after { box-sizing: border-box; }
 
-html,
-body {
+html, body {
   margin: 0;
   padding: 0;
   height: 100%;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Inter, Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, Arial, sans-serif;
   background: #000;
   color: #fff;
   overflow-x: hidden;
@@ -34,7 +30,7 @@ body {
 }
 
 /* =========================
-   Main content layout
+   Layout
    ========================= */
 
 .content {
@@ -53,10 +49,11 @@ body {
    ========================= */
 
 .wordmark {
-  font-size: clamp(2.8rem, 8vw, 5.5rem);
+  font-size: clamp(2.8rem, 8vw, 5.6rem);
   letter-spacing: 0.35em;
   font-weight: 500;
-  margin: 0 0 2.5rem;
+  margin: 0 0 2.6rem;
+  text-transform: uppercase;
 }
 
 /* =========================
@@ -64,15 +61,15 @@ body {
    ========================= */
 
 .tagline {
-  font-size: clamp(1.7rem, 4vw, 2.9rem);
+  font-size: clamp(1.7rem, 4.0vw, 2.9rem);
   font-weight: 400;
-  margin: 0 0 1.6rem;
-  opacity: 0.95;
+  margin: 0 0 1.7rem;
+  opacity: 0.96;
 }
 
 .sub {
   font-size: 0.95rem;
-  margin: 0.35rem 0;
+  margin: 0.4rem 0;
   opacity: 0.65;
   letter-spacing: 0.02em;
 }
@@ -82,13 +79,14 @@ body {
    ========================= */
 
 .card {
-  margin-top: 3.5rem;
+  margin-top: 3.6rem;
   padding: 2.2rem 2rem;
-  max-width: 520px;
+  max-width: 560px;
   width: 100%;
   background: rgba(255, 255, 255, 0.06);
   border-radius: 18px;
   backdrop-filter: blur(14px);
+  transform: translateZ(0);
 }
 
 .card h2 {
@@ -106,6 +104,7 @@ body {
 .email {
   color: #fff;
   text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 /* =========================
@@ -115,20 +114,18 @@ body {
 .btn {
   display: inline-block;
   margin-top: 0.5rem;
-  padding: 0.7rem 1.4rem;
+  padding: 0.72rem 1.5rem;
   border-radius: 999px;
   background: #fff;
   color: #000;
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 0.92rem;
+  font-weight: 600;
   text-decoration: none;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  transition: transform 180ms ease, opacity 180ms ease;
 }
 
-.btn:hover {
-  transform: translateY(-1px);
-  opacity: 0.9;
-}
+.btn:hover { transform: translateY(-1px); opacity: 0.92; }
+.btn:active { transform: translateY(0); opacity: 0.88; }
 
 /* =========================
    Learning tag
@@ -136,7 +133,7 @@ body {
 
 .learning-tag {
   margin-top: 1.2rem;
-  padding-top: 0.9rem;
+  padding-top: 0.95rem;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   font-size: 0.85rem;
   opacity: 0.55;
@@ -145,56 +142,58 @@ body {
 
 /* =========================
    Reveal animation
+   Starts only after html.is-loaded is set by JS
    ========================= */
 
 .reveal {
   opacity: 0;
-  transform: translateY(12px);
-  animation: fadeUp 900ms ease forwards;
-  will-change: opacity, transform;
+  transform: translateY(16px);
+  filter: blur(6px);
+  will-change: opacity, transform, filter;
 }
 
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Animation only after load */
+html.is-loaded .reveal {
+  animation: riseIn 1100ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Animation timing */
-.r1 { animation-delay: 0.2s; }
-.r2 { animation-delay: 0.7s; }
-.r3 { animation-delay: 1.3s; }
-.r4 { animation-delay: 1.9s; }
-.r5 { animation-delay: 2.5s; }
-.r6 { animation-delay: 3.2s; }
+@keyframes riseIn {
+  0%   { opacity: 0; transform: translateY(16px); filter: blur(6px); }
+  100% { opacity: 1; transform: translateY(0);   filter: blur(0); }
+}
+
+/* Timings: Sidechain a fraction after load, then calm sequence */
+.r1 { animation-delay: 0.22s; } /* SIDECHAIN */
+.r2 { animation-delay: 0.90s; } /* main line */
+.r3 { animation-delay: 1.70s; } /* sub 1 */
+.r4 { animation-delay: 2.35s; } /* sub 2 */
+.r5 { animation-delay: 3.00s; } /* sub 3 */
+.r6 { animation-delay: 3.90s; } /* card last */
+
+/* Subtle emphasis: slightly longer on wordmark + card */
+html.is-loaded .r1 { animation-duration: 1200ms; }
+html.is-loaded .r6 { animation-duration: 1200ms; }
 
 /* =========================
    Reduced motion
    ========================= */
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal {
+  .reveal,
+  html.is-loaded .reveal {
     animation: none;
     opacity: 1;
     transform: none;
+    filter: none;
   }
 }
 
 /* =========================
-   Small screens
+   Mobile
    ========================= */
 
 @media (max-width: 480px) {
-  .content {
-    padding-top: 5vh;
-  }
-
-  .wordmark {
-    letter-spacing: 0.25em;
-  }
-
-  .card {
-    padding: 1.8rem 1.5rem;
-  }
+  .content { padding-top: 5vh; }
+  .wordmark { letter-spacing: 0.25em; }
+  .card { padding: 1.9rem 1.5rem; }
 }
