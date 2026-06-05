@@ -4,27 +4,64 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Sidechain</title>
+    <title>Sidechain — Routing layer for operations and systems</title>
 
     <meta
       name="description"
-      content="Plug in where complexity starts. Bringing the right people together, aligned to the task. Calm structure. Clear direction."
+      content="Sidechain is a routing layer between people, knowledge, systems and execution. Plug in where complexity starts."
     />
+
+    <link rel="canonical" href="https://sidechain.global" />
 
     <meta property="og:title" content="Sidechain" />
-    <meta
-      property="og:description"
-      content="Plug in where complexity starts. Bringing the right people together, aligned to the task. Calm structure. Clear direction."
-    />
+    <meta property="og:description" content="A routing layer between people, knowledge, systems and execution." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://sidechain.global" />
+    <meta property="og:image" content="https://sidechain.global/og-image.png" />
 
-    <link rel="icon" href="/favicon.ico" />
-    <link rel="stylesheet" href="style.css?v=9" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Sidechain" />
+    <meta name="twitter:description" content="A routing layer between people, knowledge, systems and execution." />
+    <meta name="twitter:image" content="https://sidechain.global/og-image.png" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="stylesheet" href="style.css?v=10" />
   </head>
 
   <body>
     <main class="hero">
+
+      <!-- Layer 1: Far mountain silhouette -->
+      <div class="layer layer-far" aria-hidden="true">
+        <svg viewBox="0 0 1200 800" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gradFar" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
+              <stop offset="0%" stop-color="#1c1c1c"/>
+              <stop offset="100%" stop-color="#000000"/>
+            </linearGradient>
+          </defs>
+          <path d="M 0 800 L 0 530 L 75 490 L 160 540 L 270 450 L 380 495 L 490 430 L 610 468 L 710 415 L 830 455 L 935 408 L 1050 448 L 1145 425 L 1200 440 L 1200 800 Z" fill="url(#gradFar)"/>
+        </svg>
+      </div>
+
+      <!-- Layer 2: Mid-distance mountains -->
+      <div class="layer layer-mid" aria-hidden="true">
+        <svg viewBox="0 0 1200 800" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gradMid" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
+              <stop offset="0%" stop-color="#111111"/>
+              <stop offset="100%" stop-color="#000000"/>
+            </linearGradient>
+          </defs>
+          <path d="M 0 800 L 0 635 L 105 588 L 220 648 L 335 562 L 455 622 L 575 548 L 695 605 L 805 555 L 920 592 L 1035 552 L 1135 585 L 1200 562 L 1200 800 Z" fill="url(#gradMid)"/>
+        </svg>
+      </div>
+
+      <!-- Layer 3: Fog -->
+      <div class="layer-fog" aria-hidden="true"></div>
+
+      <!-- Layer 4: Routing lines -->
       <div class="bgLines" aria-hidden="true">
         <svg viewBox="0 0 1200 800" preserveAspectRatio="none">
           <!-- incoming routes -->
@@ -36,31 +73,27 @@
           <circle class="node n1" cx="935" cy="410" r="6" />
           <circle class="node n2" cx="935" cy="465" r="6" />
           <circle class="node n3" cx="935" cy="520" r="6" />
+
+          <!-- outgoing routes — signal continues beyond the node -->
+          <path class="route r-out1" d="M 935 435 C 990 440, 1070 395, 1260 365" />
+          <path class="route r-out2" d="M 935 490 C 1005 498, 1085 535, 1260 555" />
         </svg>
       </div>
 
-      <section class="content" aria-label="Sidechain landing">
+      <!-- Layer 5: Content -->
+      <section class="content" aria-label="Sidechain">
         <h1 class="brand">SIDECHAIN</h1>
-
+        <p class="descriptor">A routing layer between people, knowledge, systems and execution.</p>
         <p class="tagline t1">Plug in where complexity starts.</p>
-        <p class="tagline t2">Bringing the right people together, aligned to the task.</p>
-        <p class="tagline t3">Calm structure.</p>
-        <p class="tagline t4">Clear direction.</p>
-
-        <div class="contact">
-          <h2 class="contactTitle">Start a conversation.</h2>
-          <p class="contactText">
-            When clarity is required and time matters, reach out at
-            <a class="email" href="mailto:hello@sidechain.global">hello@sidechain.global</a>
-          </p>
-
-          <a
-            class="btn"
-            href="mailto:hello@sidechain.global?subject=Sidechain%20inquiry"
-            >Contact Sidechain</a
-          >
-        </div>
       </section>
+
     </main>
+
+    <section class="principle" aria-label="Principle">
+      <p class="principleText">Learning happens where responsibility is real.</p>
+      <p class="contactAmbient">
+        <a href="mailto:hello@sidechain.global">hello@sidechain.global</a>
+      </p>
+    </section>
   </body>
 </html>
