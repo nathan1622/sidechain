@@ -2,12 +2,12 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --bg: #000;
-  --fg: #fff;
-  --muted:  rgba(255,255,255,.72);
-  --muted2: rgba(255,255,255,.48);
-  --stroke:  rgba(255,255,255,.14);
-  --stroke2: rgba(255,255,255,.08);
+  --bg:     #000;
+  --fg:     #fff;
+  --muted:  rgba(255,255,255,.82);
+  --muted2: rgba(255,255,255,.52);
+  --stroke:  rgba(255,255,255,.10);
+  --stroke2: rgba(255,255,255,.06);
 }
 
 html {
@@ -25,50 +25,48 @@ body {
 
 a { color: inherit; text-decoration: none; }
 
-/* ── Hero ─────────────────────────────────────── */
+/* ── Hero ─────────────────────────────────────────────── */
 
 .hero {
   min-height: 100svh;
-  min-height: 100vh; /* fallback */
+  min-height: 100vh;
   display: grid;
   place-items: center;
   overflow: hidden;
   position: relative;
   padding: 48px 20px;
+  background-image: url('hero.jpg');
+  background-size: cover;
+  background-position: center 30%;
+  background-repeat: no-repeat;
 }
 
-/* ── Background layers ────────────────────────── */
-
-.layer,
-.layer-fog,
-.bgLines {
+/* Layer 2 — Light gradient overlay.
+   Top: slight darkening for text legibility.
+   Mid: near-transparent — landscape breathes.
+   Bottom: strong fade to black for seamless section join. */
+.hero::before {
+  content: '';
   position: absolute;
   inset: 0;
-  pointer-events: none;
-}
-
-.layer svg {
-  width: 100%;
-  height: 100%;
-}
-
-/* Far mountains — nearly invisible, adds depth at ridge */
-.layer-far {
   z-index: 1;
-  opacity: 0;
-  animation: lyrIn 4s ease 0.2s forwards;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,.40)  0%,
+    rgba(0,0,0,.08) 22%,
+    rgba(0,0,0,.12) 55%,
+    rgba(0,0,0,.80) 82%,
+    rgba(0,0,0,1.0) 100%
+  );
 }
 
-/* Mid mountains — slightly more present */
-.layer-mid {
-  z-index: 2;
-  opacity: 0;
-  animation: lyrIn 4s ease 0.6s forwards;
-}
+/* ── Layer 3 — Fog drift ──────────────────────────────── */
 
-/* Fog — slow perpetual drift */
 .layer-fog {
-  z-index: 3;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
   overflow: hidden;
 }
 
@@ -79,30 +77,36 @@ a { color: inherit; text-decoration: none; }
   border-radius: 50%;
 }
 
+/* Primary fog body — drifts slowly across mid-frame */
 .layer-fog::before {
-  width: 90%;
-  height: 55%;
-  background: radial-gradient(ellipse at center, rgba(255,255,255,.030) 0%, transparent 62%);
-  top: 42%;
-  left: 12%;
-  animation: fogA 100s ease-in-out infinite alternate;
+  width: 110%;
+  height: 50%;
+  background: radial-gradient(ellipse at center, rgba(255,255,255,.018) 0%, transparent 58%);
+  top:  46%;
+  left: -5%;
+  animation: fogA 110s ease-in-out infinite alternate;
 }
 
+/* Secondary fog wisp — counter-drift, lower density */
 .layer-fog::after {
-  width: 65%;
-  height: 40%;
-  background: radial-gradient(ellipse at center, rgba(255,255,255,.020) 0%, transparent 62%);
-  top: 55%;
-  left: -8%;
-  animation: fogB 80s ease-in-out infinite alternate;
+  width: 80%;
+  height: 38%;
+  background: radial-gradient(ellipse at center, rgba(255,255,255,.012) 0%, transparent 58%);
+  top:  56%;
+  left:  8%;
+  animation: fogB 85s ease-in-out infinite alternate;
 }
 
-/* Routing layer */
+/* ── Layer 4 — Routing lines ──────────────────────────── */
+
 .bgLines {
-  z-index: 4;
+  position: absolute;
+  inset: 0;
+  z-index: 3;
   opacity: 0;
-  animation: lyrIn 1.6s ease forwards;
-  filter: blur(0.2px);
+  animation: routeIn 1.8s ease forwards;
+  filter: blur(0.3px);
+  pointer-events: none;
 }
 
 .bgLines svg {
@@ -110,45 +114,40 @@ a { color: inherit; text-decoration: none; }
   height: 100%;
 }
 
-/* ── Routing paths ────────────────────────────── */
-
 .route {
   fill: none;
   stroke: var(--stroke);
-  stroke-width: 8;
+  stroke-width: 7;
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-dasharray: 2000;
   stroke-dashoffset: 2000;
-  animation: draw 2.2s cubic-bezier(.2,.8,.2,1) 0.3s forwards;
+  animation: draw 2.2s cubic-bezier(.2,.8,.2,1) .3s forwards;
 }
 
-.r2 { stroke: var(--stroke2); stroke-width: 7; animation-delay: 0.5s; }
-.r3 { stroke: rgba(255,255,255,.09); stroke-width: 6; animation-delay: 0.7s; }
+.r2     { stroke: var(--stroke2); stroke-width: 6; animation-delay: .5s; }
+.r3     { stroke: rgba(255,255,255,.05); stroke-width: 5; animation-delay: .7s; }
+.r-out1 { stroke-width: 5; animation-delay: 2.4s; animation-duration: 1.6s; }
+.r-out2 { stroke: rgba(255,255,255,.05); stroke-width: 4; animation-delay: 2.6s; animation-duration: 1.6s; }
 
-/* Outgoing routes — animate after nodes appear */
-.r-out1 { stroke-width: 6;  animation-delay: 2.4s; animation-duration: 1.6s; }
-.r-out2 { stroke: rgba(255,255,255,.09); stroke-width: 5; animation-delay: 2.6s; animation-duration: 1.6s; }
-
-/* Convergence nodes */
 .node {
-  fill: rgba(255,255,255,.38);
+  fill: rgba(255,255,255,.40);
   opacity: 0;
   transform-origin: center;
-  animation: nodePop 0.9s ease forwards;
+  animation: nodePop .9s ease forwards;
 }
 
 .n1 { animation-delay: 2.2s; }
 .n2 { animation-delay: 2.4s; }
 .n3 { animation-delay: 2.6s; }
 
-/* ── Hero content ─────────────────────────────── */
+/* ── Layer 5 — Content ────────────────────────────────── */
 
 .content {
   width: min(980px, 92vw);
   text-align: center;
   position: relative;
-  z-index: 5;
+  z-index: 4;
 }
 
 .brand {
@@ -157,22 +156,28 @@ a { color: inherit; text-decoration: none; }
   text-transform: uppercase;
   font-size: clamp(40px, 8vw, 92px);
   margin-bottom: 28px;
+  /* Multi-layer shadow anchors text above landscape without a card */
+  text-shadow:
+    0 0  50px rgba(0,0,0,.85),
+    0 0 100px rgba(0,0,0,.55),
+    0 2px  6px rgba(0,0,0,.70);
   opacity: 0;
   transform: translateY(16px);
-  animation: riseFade 1.0s ease 0.2s forwards;
+  animation: riseFade 1.0s ease .2s forwards;
 }
 
 .descriptor {
   font-size: clamp(14px, 1.7vw, 19px);
   font-weight: 400;
   color: var(--muted2);
-  max-width: 640px;
+  max-width: 620px;
   margin: 0 auto 22px;
   line-height: 1.65;
   letter-spacing: 0.01em;
+  text-shadow: 0 1px 16px rgba(0,0,0,.85);
   opacity: 0;
   transform: translateY(10px);
-  animation: riseFade 0.8s ease 0.9s forwards;
+  animation: riseFade .8s ease .9s forwards;
 }
 
 .tagline {
@@ -184,16 +189,17 @@ a { color: inherit; text-decoration: none; }
 .t1 {
   font-size: clamp(18px, 2.3vw, 27px);
   color: var(--muted);
+  text-shadow: 0 1px 16px rgba(0,0,0,.85);
   opacity: 0;
   transform: translateY(10px);
-  animation: riseFade 0.8s ease 1.5s forwards;
+  animation: riseFade .8s ease 1.5s forwards;
 }
 
-/* ── Principle section ────────────────────────── */
+/* ── Principle section ────────────────────────────────── */
 
 .principle {
   min-height: 100svh;
-  min-height: 100vh; /* fallback */
+  min-height: 100vh;
   display: grid;
   place-items: center;
   padding: 80px 24px;
@@ -228,11 +234,11 @@ a { color: inherit; text-decoration: none; }
   border-bottom-color: rgba(255,255,255,.55);
 }
 
-/* ── Keyframes ────────────────────────────────── */
+/* ── Keyframes ────────────────────────────────────────── */
 
-@keyframes lyrIn {
+@keyframes routeIn {
   from { opacity: 0; }
-  to   { opacity: 1; }
+  to   { opacity: .75; }
 }
 
 @keyframes draw {
@@ -244,41 +250,49 @@ a { color: inherit; text-decoration: none; }
 }
 
 @keyframes nodePop {
-  0%   { opacity: 0; transform: scale(.65); }
-  60%  { opacity: .9; transform: scale(1.1); }
-  100% { opacity: .65; transform: scale(1); }
+  0%   { opacity: 0;   transform: scale(.65); }
+  60%  { opacity: .85; transform: scale(1.08); }
+  100% { opacity: .55; transform: scale(1);   }
 }
 
 @keyframes fogA {
-  from { transform: translate(0, 0) scale(1); }
-  to   { transform: translate(-14%, 7%) scale(1.10); }
+  from { transform: translate(  0%,  0%) scale(1.00); }
+  to   { transform: translate(-12%,  7%) scale(1.08); }
 }
 
 @keyframes fogB {
-  from { transform: translate(0, 0) scale(1); }
-  to   { transform: translate(10%, -9%) scale(0.93); }
+  from { transform: translate(  0%,  0%) scale(1.00); }
+  to   { transform: translate(  9%, -8%) scale(0.94); }
 }
 
-/* ── Mobile ───────────────────────────────────── */
+/* ── Mobile ───────────────────────────────────────────── */
 
 @media (max-width: 720px) {
-  .hero { padding: 40px 20px; }
+  /* Shift background right to keep dominant peak in frame */
+  .hero {
+    padding: 40px 20px;
+    background-position: 72% 30%;
+  }
 
-  .brand { letter-spacing: 0.22em; }
+  .brand {
+    letter-spacing: 0.22em;
+  }
 
   .descriptor {
     font-size: clamp(14px, 3.8vw, 17px);
-    max-width: 88vw;
+    max-width: 90vw;
   }
 
-  .t1 { font-size: clamp(17px, 4.4vw, 22px); }
+  .t1 {
+    font-size: clamp(17px, 4.4vw, 22px);
+  }
 
-  /* Thicker strokes on small screens */
-  .route    { stroke-width: 11; }
-  .r2       { stroke-width: 10; }
-  .r3       { stroke-width: 9;  }
-  .r-out1   { stroke-width: 9;  }
-  .r-out2   { stroke-width: 8;  }
+  /* Slightly thicker strokes compensate for scaled-up SVG on narrow screens */
+  .route  { stroke-width: 10; }
+  .r2     { stroke-width: 9;  }
+  .r3     { stroke-width: 8;  }
+  .r-out1 { stroke-width: 8;  }
+  .r-out2 { stroke-width: 7;  }
 
   .principle {
     min-height: auto;
@@ -291,11 +305,9 @@ a { color: inherit; text-decoration: none; }
   }
 }
 
-/* ── Reduced motion ───────────────────────────── */
+/* ── Reduced motion ───────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
-  .layer-far,
-  .layer-mid,
   .bgLines,
   .route,
   .node,
@@ -306,6 +318,10 @@ a { color: inherit; text-decoration: none; }
     opacity: 1 !important;
     transform: none !important;
     stroke-dashoffset: 0 !important;
+  }
+
+  .bgLines {
+    opacity: .75 !important;
   }
 
   .layer-fog::before,
