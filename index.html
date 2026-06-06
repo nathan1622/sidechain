@@ -26,7 +26,7 @@
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
-    <link rel="stylesheet" href="style.css?v=14" />
+    <link rel="stylesheet" href="style.css?v=15" />
   </head>
 
   <body>
@@ -46,8 +46,9 @@
         <source src="hero-video.mp4" type="video/mp4" />
       </video>
 
-      <!-- Loop mask — dark dip timed to video duration (5.084s)
-           masks the loop cut with a soft cinematic fade -->
+      <!-- Loop mask — opacity driven by JS from video.currentTime.
+           Starts fully black (opacity:1 in CSS); JS takes over immediately.
+           If JS is unavailable, mask stays black and hero.jpg shows through. -->
       <div class="hero-loop-mask" aria-hidden="true"></div>
 
       <!-- Content -->
@@ -64,5 +65,60 @@
         <a href="mailto:hello@sidechain.global">hello@sidechain.global</a>
       </p>
     </section>
+
+    <script>
+      (function () {
+        const video = document.querySelector('.hero-video');
+        const mask  = document.querySelector('.hero-loop-mask');
+
+        // Bail out if elements are missing (e.g. mobile where video is display:none)
+        if (!video || !mask) return;
+
+        // Respect system motion preferences — mask stays opaque, hero.jpg shows
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        // Skip on mobile — video is hidden via CSS, hero.jpg is the background
+        if (window.matchMedia('(max-width: 720px)').matches) return;
+
+        const FADE_IN  = 1.1;  // seconds: black → clear at video start
+        const FADE_OUT = 1.4;  // seconds: clear → black before loop cut
+
+        // Smooth cubic easing — makes the opacity change feel organic, not linear
+        function easeInOutCubic(t) {
+          return t < 0.5
+            ? 4 * t * t * t
+            : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        }
+
+        function tick() {
+          const t   = video.currentTime;
+          const dur = video.duration;
+          let opacity = 1; // default to black if duration not yet known
+
+          if (dur && !isNaN(dur)) {
+            if (t < FADE_IN) {
+              // Opening: fades from black to clear over the first 1.1s
+              opacity = 1 - easeInOutCubic(t / FADE_IN);
+            } else if (dur - t < FADE_OUT) {
+              // Closing: fades from clear to black over the last 1.4s
+              opacity = 1 - easeInOutCubic((dur - t) / FADE_OUT);
+            } else {
+              // Middle: fully transparent — video plays unobstructed
+              opacity = 0;
+            }
+          }
+
+          mask.style.opacity = opacity;
+          requestAnimationFrame(tick);
+        }
+
+        // Start as soon as duration is known
+        if (video.readyState >= 1) {
+          tick();
+        } else {
+          video.addEventListener('loadedmetadata', tick, { once: true });
+        }
+      }());
+    </script>
   </body>
 </html>

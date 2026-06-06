@@ -34,8 +34,8 @@ a { color: inherit; text-decoration: none; }
   position: relative;
   padding: 48px 20px;
 
-  /* hero.jpg: always present — fallback for mobile, reduced-motion,
-     and while video loads on first frame */
+  /* hero.jpg: always present as background.
+     Visible on mobile, reduced-motion, and while video first frame loads. */
   background-image: url('hero.jpg');
   background-size: cover;
   background-position: center 30%;
@@ -68,44 +68,29 @@ a { color: inherit; text-decoration: none; }
   left: 0;
   width: 100%;
 
-  /* CSS watermark crop: extends 80px below hero bottom.
-     hero has overflow:hidden — extra height is never visible.
-     object-position keeps the top frame in view.
-     Adjust the 80px value if the watermark is still visible. */
+  /* CSS watermark crop: extends 80px below hero.
+     hero has overflow:hidden — extra height is clipped.
+     Adjust 80px if watermark remains visible. */
   height: calc(100% + 80px);
   object-fit: cover;
   object-position: center top;
-
   pointer-events: none;
-
-  /* Fade in on load — hero.jpg visible underneath while first frame decodes */
-  animation: videoIn 1.2s ease 0.1s both;
-}
-
-@keyframes videoIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
 }
 
 /* ── Loop mask ────────────────────────────────────────── */
 
-/* Timed precisely to the video loop (5.084s).
-   Fades dark just before and after the cut, masking the discontinuity.
-   Transparent for the majority of each cycle — motion feels uninterrupted. */
+/* Opacity is driven entirely by JS (video.currentTime → requestAnimationFrame).
+   CSS sets opacity:1 so the mask starts fully black.
+   The hero.jpg background shows through on page load until the video
+   is ready and JS begins its tick loop.
+   If JS is unavailable, opacity:1 persists — hero.jpg remains visible. */
 .hero-loop-mask {
   position: absolute;
   inset: 0;
   z-index: 3;
   background: #000;
   pointer-events: none;
-  animation: loopMask 5.084s ease-in-out infinite;
-}
-
-@keyframes loopMask {
-  0%   { opacity: 1; }   /* full black at cut */
-  22%  { opacity: 0; }   /* emerges slowly — 1.12s fade in */
-  72%  { opacity: 0; }   /* clean motion — 2.54s window */
-  100% { opacity: 1; }   /* closes slowly — 1.42s fade out */
+  opacity: 1;
 }
 
 /* ── Content ──────────────────────────────────────────── */
@@ -200,14 +185,14 @@ a { color: inherit; text-decoration: none; }
     background-position: 72% 30%;
   }
 
+  /* Hide video and mask — hero.jpg background takes over */
   .hero-video,
   .hero-loop-mask {
     display: none;
   }
 
   .brand { letter-spacing: 0.22em; }
-
-  .t1 { font-size: clamp(16px, 4.2vw, 21px); }
+  .t1    { font-size: clamp(16px, 4.2vw, 21px); }
 
   .principle {
     min-height: auto;
