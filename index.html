@@ -26,7 +26,7 @@
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
-    <link rel="stylesheet" href="style.css?v=18" />
+    <link rel="stylesheet" href="style.css?v=19" />
   </head>
 
   <body>
@@ -79,8 +79,8 @@
         // Respect system motion preferences — mask stays opaque, hero.jpg shows
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-        const FADE_IN  = 1.1;  // seconds: black → clear at video start
-        const FADE_OUT = 1.4;  // seconds: clear → black before loop cut
+        const FADE_IN  = 0.8;  // seconds: black → clear at video start
+        const FADE_OUT = 1.8;  // seconds: clear → black before loop cut (cinematic)
 
         // Smooth cubic easing — makes the opacity change feel organic, not linear
         function easeInOutCubic(t) {
@@ -96,10 +96,10 @@
 
           if (dur && !isNaN(dur)) {
             if (t < FADE_IN) {
-              // Opening: fades from black to clear over the first 1.1s
+              // Opening: fades from black to clear over the first 0.8s
               opacity = 1 - easeInOutCubic(t / FADE_IN);
             } else if (dur - t < FADE_OUT) {
-              // Closing: fades from clear to black over the last 1.4s
+              // Closing: fades from clear to black over the last 1.8s
               opacity = 1 - easeInOutCubic((dur - t) / FADE_OUT);
             } else {
               // Middle: fully transparent — video plays unobstructed
