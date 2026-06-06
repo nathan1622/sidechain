@@ -154,6 +154,16 @@ a { color: inherit; text-decoration: none; }
   animation: riseFade 1.0s ease 4.2s forwards;
 }
 
+.pillars {
+  font-size: clamp(10px, 1.2vw, 13px);
+  letter-spacing: 0.30em;
+  color: rgba(255,255,255,.28);
+  text-transform: uppercase;
+  margin-top: 44px;
+  opacity: 0;
+  animation: opacityFade 0.8s ease 5.4s forwards;
+}
+
 /* ── Principle section ────────────────────────────────── */
 
 .principle {
@@ -184,6 +194,10 @@ a { color: inherit; text-decoration: none; }
 /* Logo: holds centered (large), then glides up to final position above wordmark.
    translateY offset is tuned so scale(2) places the logo approximately at hero center.
    Separate mobile keyframe uses a smaller offset to match the shorter content block. */
+@keyframes opacityFade {
+  to { opacity: 1; }
+}
+
 @keyframes logoSettle {
   0%, 43%  { transform: translateY(105px) scale(2); }
   100%     { transform: translateY(0) scale(1); }
@@ -227,7 +241,8 @@ a { color: inherit; text-decoration: none; }
 
   .brand,
   .t1,
-  .t2 {
+  .t2,
+  .pillars {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
