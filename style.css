@@ -96,15 +96,12 @@ a { color: inherit; text-decoration: none; }
 /* ── Logo ─────────────────────────────────────────────── */
 
 .hero-logo {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 4;
-  width: 180px;
+  display: block;
+  margin: 0 auto 24px;
+  width: 90px;
   height: auto;
   filter: invert(1);
-  animation: logoReveal 4.0s ease forwards;
+  animation: logoSettle 2.8s ease-in-out forwards;
 }
 
 /* ── Content ──────────────────────────────────────────── */
@@ -128,7 +125,7 @@ a { color: inherit; text-decoration: none; }
     0 2px  6px rgba(0,0,0,.70);
   opacity: 0;
   transform: translateY(16px);
-  animation: riseFade 1.2s ease 3.6s forwards;
+  animation: riseFade 1.0s ease 2.2s forwards;
 }
 
 .tagline {
@@ -143,7 +140,7 @@ a { color: inherit; text-decoration: none; }
   text-shadow: 0 1px 18px rgba(0,0,0,.85);
   opacity: 0;
   transform: translateY(10px);
-  animation: riseFade 1.0s ease 4.8s forwards;
+  animation: riseFade 1.0s ease 3.2s forwards;
 }
 
 .t2 {
@@ -154,7 +151,7 @@ a { color: inherit; text-decoration: none; }
   margin-top: 20px;
   opacity: 0;
   transform: translateY(10px);
-  animation: riseFade 1.0s ease 5.8s forwards;
+  animation: riseFade 1.0s ease 4.2s forwards;
 }
 
 /* ── Principle section ────────────────────────────────── */
@@ -184,10 +181,17 @@ a { color: inherit; text-decoration: none; }
 
 /* ── Keyframes ────────────────────────────────────────── */
 
-@keyframes logoReveal {
-  0%   { opacity: 1; }
-  50%  { opacity: 1; }
-  100% { opacity: 0; }
+/* Logo: holds centered (large), then glides up to final position above wordmark.
+   translateY offset is tuned so scale(2) places the logo approximately at hero center.
+   Separate mobile keyframe uses a smaller offset to match the shorter content block. */
+@keyframes logoSettle {
+  0%, 43%  { transform: translateY(105px) scale(2); }
+  100%     { transform: translateY(0) scale(1); }
+}
+
+@keyframes logoSettleMobile {
+  0%, 43%  { transform: translateY(78px) scale(2); }
+  100%     { transform: translateY(0) scale(1); }
 }
 
 @keyframes riseFade {
@@ -202,7 +206,7 @@ a { color: inherit; text-decoration: none; }
     background-position: 72% 30%;
   }
 
-  .hero-logo { width: 120px; }
+  .hero-logo { width: 65px; margin-bottom: 16px; animation-name: logoSettleMobile; }
   .brand     { letter-spacing: 0.22em; }
   .t1        { font-size: clamp(16px, 4.2vw, 21px); }
   .t2        { font-size: clamp(13px, 3.8vw, 18px); }
@@ -212,9 +216,13 @@ a { color: inherit; text-decoration: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .hero-video,
-  .hero-loop-mask,
-  .hero-logo {
+  .hero-loop-mask {
     display: none;
+  }
+
+  .hero-logo {
+    animation: none !important;
+    transform: none !important;
   }
 
   .brand,
