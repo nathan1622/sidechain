@@ -79,18 +79,17 @@ a { color: inherit; text-decoration: none; }
 
 /* ── Loop mask ────────────────────────────────────────── */
 
-/* Opacity is driven entirely by JS (video.currentTime → requestAnimationFrame).
-   CSS sets opacity:1 so the mask starts fully black.
-   The hero.jpg background shows through on page load until the video
-   is ready and JS begins its tick loop.
-   If JS is unavailable, opacity:1 persists — hero.jpg remains visible. */
+/* Starts transparent so hero.jpg and video are immediately visible on load.
+   JS fades the mask to black before each loop cut to hide the seam,
+   then fades back to transparent — but only on loop 2+, not on first play.
+   If JS is unavailable, mask stays transparent — hero.jpg shows through. */
 .hero-loop-mask {
   position: absolute;
   inset: 0;
   z-index: 3;
   background: #000;
   pointer-events: none;
-  opacity: 1;
+  opacity: 0;
 }
 
 /* ── Logo ─────────────────────────────────────────────── */

@@ -26,7 +26,7 @@
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
-    <link rel="stylesheet" href="style.css?v=19" />
+    <link rel="stylesheet" href="style.css?v=20" />
   </head>
 
   <body>
@@ -76,11 +76,12 @@
         // Bail out if elements are missing (e.g. mobile where video is display:none)
         if (!video || !mask) return;
 
-        // Respect system motion preferences — mask stays opaque, hero.jpg shows
+        // Respect system motion preferences — mask stays transparent, hero.jpg shows
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-        const FADE_IN  = 0.8;  // seconds: black → clear at video start
+        const FADE_IN  = 0.8;  // seconds: black → clear after each loop cut
         const FADE_OUT = 1.8;  // seconds: clear → black before loop cut (cinematic)
+        let   firstPlay = true; // FADE_IN skipped on first play; hero visible from load
 
         // Smooth cubic easing — makes the opacity change feel organic, not linear
         function easeInOutCubic(t) {
@@ -92,15 +93,16 @@
         function tick() {
           const t   = video.currentTime;
           const dur = video.duration;
-          let opacity = 1; // default to black if duration not yet known
+          let opacity = 0; // default transparent — hero always visible
 
           if (dur && !isNaN(dur)) {
-            if (t < FADE_IN) {
-              // Opening: fades from black to clear over the first 0.8s
+            if (!firstPlay && t < FADE_IN) {
+              // After loop cut: fades from black to clear
               opacity = 1 - easeInOutCubic(t / FADE_IN);
             } else if (dur - t < FADE_OUT) {
-              // Closing: fades from clear to black over the last 1.8s
+              // Before loop cut: fades from clear to black
               opacity = 1 - easeInOutCubic((dur - t) / FADE_OUT);
+              firstPlay = false;
             } else {
               // Middle: fully transparent — video plays unobstructed
               opacity = 0;
