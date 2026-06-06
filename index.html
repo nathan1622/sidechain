@@ -26,18 +26,31 @@
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
-    <link rel="stylesheet" href="style.css?v=12" />
+    <link rel="stylesheet" href="style.css?v=14" />
   </head>
 
   <body>
     <main class="hero">
 
-      <!-- Layer 3: fog — valley and lower elevations only -->
-      <div class="layer-fog" aria-hidden="true">
-        <img class="fog-img" src="fog-overlay.webp" alt="" />
-      </div>
+      <!-- Video hero — desktop only.
+           Falls back to hero.jpg on mobile and prefers-reduced-motion. -->
+      <video
+        class="hero-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        aria-hidden="true"
+      >
+        <source src="hero-video.mp4" type="video/mp4" />
+      </video>
 
-      <!-- Layer 4: content -->
+      <!-- Loop mask — dark dip timed to video duration (5.084s)
+           masks the loop cut with a soft cinematic fade -->
+      <div class="hero-loop-mask" aria-hidden="true"></div>
+
+      <!-- Content -->
       <section class="content" aria-label="Sidechain">
         <h1 class="brand">SIDECHAIN</h1>
         <p class="tagline t1">Plug in where complexity starts.</p>

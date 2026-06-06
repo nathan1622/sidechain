@@ -34,22 +34,20 @@ a { color: inherit; text-decoration: none; }
   position: relative;
   padding: 48px 20px;
 
-  /* Layer 1: mountain photograph — static, never animated */
+  /* hero.jpg: always present — fallback for mobile, reduced-motion,
+     and while video loads on first frame */
   background-image: url('hero.jpg');
   background-size: cover;
   background-position: center 30%;
   background-repeat: no-repeat;
 }
 
-/* Layer 2: dark readability overlay
-   Top: slight frame for text legibility
-   Mid: near-transparent — landscape breathes
-   Bottom: hard fade to black for seamless join */
+/* Dark readability overlay — static, always on */
 .hero::before {
   content: '';
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 2;
   background: linear-gradient(
     to bottom,
     rgba(0,0,0,.42)  0%,
@@ -61,63 +59,62 @@ a { color: inherit; text-decoration: none; }
   pointer-events: none;
 }
 
-/* ── Layer 3: fog ─────────────────────────────────────── */
+/* ── Video ────────────────────────────────────────────── */
 
-.layer-fog {
+.hero-video {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  /* CSS watermark crop: extends 80px below hero bottom.
+     hero has overflow:hidden — extra height is never visible.
+     object-position keeps the top frame in view.
+     Adjust the 80px value if the watermark is still visible. */
+  height: calc(100% + 80px);
+  object-fit: cover;
+  object-position: center top;
+
+  pointer-events: none;
+
+  /* Fade in on load — hero.jpg visible underneath while first frame decodes */
+  animation: videoIn 1.2s ease 0.1s both;
+}
+
+@keyframes videoIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Loop mask ────────────────────────────────────────── */
+
+/* Timed precisely to the video loop (5.084s).
+   Fades dark just before and after the cut, masking the discontinuity.
+   Transparent for the majority of each cycle — motion feels uninterrupted. */
+.hero-loop-mask {
   position: absolute;
   inset: 0;
-  z-index: 2;
-  overflow: hidden;
+  z-index: 3;
+  background: #000;
   pointer-events: none;
+  animation: loopMask 5.084s ease-in-out infinite;
 }
 
-.fog-img {
-  position: absolute;
-
-  /* Starts at 44% — below all significant peak geometry.
-     Peaks sit at 11–42% of viewport; this gives clear separation. */
-  top: 44%;
-
-  /* Oversized for horizontal drift without exposing edges */
-  left: -30vw;
-  width: 160vw;
-  height: auto;
-  display: block;
-
-  /* Mask: fog fades in from top (peaks stay sharp),
-     reaches full density in the valley, fades at base */
-  mask-image: linear-gradient(
-    to bottom,
-    transparent       0%,
-    rgba(0,0,0,.35)  12%,
-    rgba(0,0,0,1)    32%,
-    rgba(0,0,0,1)    68%,
-    transparent     100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    transparent       0%,
-    rgba(0,0,0,.35)  12%,
-    rgba(0,0,0,1)    32%,
-    rgba(0,0,0,1)    68%,
-    transparent     100%
-  );
-
-  animation: fogDrift 150s ease-in-out infinite alternate;
+@keyframes loopMask {
+  0%   { opacity: 1; }   /* full black at cut */
+  22%  { opacity: 0; }   /* emerges slowly — 1.12s fade in */
+  72%  { opacity: 0; }   /* clean motion — 2.54s window */
+  100% { opacity: 1; }   /* closes slowly — 1.42s fade out */
 }
 
-@keyframes fogDrift {
-  from { transform: translateX(0);     opacity: 0.85; }
-  to   { transform: translateX(-24vw); opacity: 1.0;  }
-}
-
-/* ── Layer 4: content ─────────────────────────────────── */
+/* ── Content ──────────────────────────────────────────── */
 
 .content {
   width: min(980px, 92vw);
   text-align: center;
   position: relative;
-  z-index: 3;
+  z-index: 4;
 }
 
 .brand {
@@ -132,7 +129,7 @@ a { color: inherit; text-decoration: none; }
     0 2px  6px rgba(0,0,0,.70);
   opacity: 0;
   transform: translateY(16px);
-  animation: riseFade 1.0s ease .2s forwards;
+  animation: riseFade 1.0s ease .3s forwards;
 }
 
 .tagline {
@@ -147,7 +144,7 @@ a { color: inherit; text-decoration: none; }
   text-shadow: 0 1px 18px rgba(0,0,0,.85);
   opacity: 0;
   transform: translateY(10px);
-  animation: riseFade .8s ease .9s forwards;
+  animation: riseFade .8s ease 1.0s forwards;
 }
 
 /* ── Principle section ────────────────────────────────── */
@@ -195,29 +192,22 @@ a { color: inherit; text-decoration: none; }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Mobile ───────────────────────────────────────────── */
+/* ── Mobile — video off, hero.jpg on ─────────────────── */
 
 @media (max-width: 720px) {
   .hero {
     padding: 40px 20px;
-    /* Shift right to keep dominant peak in frame on portrait */
     background-position: 72% 30%;
   }
 
-  .brand {
-    letter-spacing: 0.22em;
+  .hero-video,
+  .hero-loop-mask {
+    display: none;
   }
 
-  .t1 {
-    font-size: clamp(16px, 4.2vw, 21px);
-  }
+  .brand { letter-spacing: 0.22em; }
 
-  /* Wider fog on narrow viewports — maintains coverage and drift room */
-  .fog-img {
-    top: 46%;
-    left: -60vw;
-    width: 220vw;
-  }
+  .t1 { font-size: clamp(16px, 4.2vw, 21px); }
 
   .principle {
     min-height: auto;
@@ -230,18 +220,18 @@ a { color: inherit; text-decoration: none; }
   }
 }
 
-/* ── Reduced motion ───────────────────────────────────── */
+/* ── Reduced motion — video off, hero.jpg on ─────────── */
 
 @media (prefers-reduced-motion: reduce) {
+  .hero-video,
+  .hero-loop-mask {
+    display: none;
+  }
+
   .brand,
   .t1 {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
-  }
-
-  .fog-img {
-    animation: none !important;
-    opacity: .92 !important;
   }
 }
