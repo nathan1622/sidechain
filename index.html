@@ -77,9 +77,6 @@
         // Respect system motion preferences — mask stays opaque, hero.jpg shows
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-        // Skip on mobile — video is hidden via CSS, hero.jpg is the background
-        if (window.matchMedia('(max-width: 720px)').matches) return;
-
         const FADE_IN  = 1.1;  // seconds: black → clear at video start
         const FADE_OUT = 1.4;  // seconds: clear → black before loop cut
 
