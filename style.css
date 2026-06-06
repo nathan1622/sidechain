@@ -5,9 +5,7 @@
   --bg:     #000;
   --fg:     #fff;
   --muted:  rgba(255,255,255,.82);
-  --muted2: rgba(255,255,255,.52);
-  --stroke:  rgba(255,255,255,.10);
-  --stroke2: rgba(255,255,255,.06);
+  --muted2: rgba(255,255,255,.50);
 }
 
 html {
@@ -35,16 +33,18 @@ a { color: inherit; text-decoration: none; }
   overflow: hidden;
   position: relative;
   padding: 48px 20px;
+
+  /* Layer 1: mountain photograph — static, never animated */
   background-image: url('hero.jpg');
   background-size: cover;
   background-position: center 30%;
   background-repeat: no-repeat;
 }
 
-/* Layer 2 — Light gradient overlay.
-   Top: slight darkening for text legibility.
-   Mid: near-transparent — landscape breathes.
-   Bottom: strong fade to black for seamless section join. */
+/* Layer 2: dark readability overlay
+   Top: slight frame for text legibility
+   Mid: near-transparent — landscape breathes
+   Bottom: hard fade to black for seamless join */
 .hero::before {
   content: '';
   position: absolute;
@@ -52,102 +52,72 @@ a { color: inherit; text-decoration: none; }
   z-index: 1;
   background: linear-gradient(
     to bottom,
-    rgba(0,0,0,.40)  0%,
+    rgba(0,0,0,.42)  0%,
     rgba(0,0,0,.08) 22%,
-    rgba(0,0,0,.12) 55%,
-    rgba(0,0,0,.80) 82%,
+    rgba(0,0,0,.10) 55%,
+    rgba(0,0,0,.82) 82%,
     rgba(0,0,0,1.0) 100%
   );
+  pointer-events: none;
 }
 
-/* ── Layer 3 — Fog drift ──────────────────────────────── */
+/* ── Layer 3: fog ─────────────────────────────────────── */
 
 .layer-fog {
   position: absolute;
   inset: 0;
   z-index: 2;
-  pointer-events: none;
   overflow: hidden;
-}
-
-.layer-fog::before,
-.layer-fog::after {
-  content: '';
-  position: absolute;
-  border-radius: 50%;
-}
-
-/* Primary fog body — drifts slowly across mid-frame */
-.layer-fog::before {
-  width: 110%;
-  height: 50%;
-  background: radial-gradient(ellipse at center, rgba(255,255,255,.018) 0%, transparent 58%);
-  top:  46%;
-  left: -5%;
-  animation: fogA 110s ease-in-out infinite alternate;
-}
-
-/* Secondary fog wisp — counter-drift, lower density */
-.layer-fog::after {
-  width: 80%;
-  height: 38%;
-  background: radial-gradient(ellipse at center, rgba(255,255,255,.012) 0%, transparent 58%);
-  top:  56%;
-  left:  8%;
-  animation: fogB 85s ease-in-out infinite alternate;
-}
-
-/* ── Layer 4 — Routing lines ──────────────────────────── */
-
-.bgLines {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  opacity: 0;
-  animation: routeIn 1.8s ease forwards;
-  filter: blur(0.3px);
   pointer-events: none;
 }
 
-.bgLines svg {
-  width: 100%;
-  height: 100%;
+.fog-img {
+  position: absolute;
+
+  /* Starts at 44% — below all significant peak geometry.
+     Peaks sit at 11–42% of viewport; this gives clear separation. */
+  top: 44%;
+
+  /* Oversized for horizontal drift without exposing edges */
+  left: -30vw;
+  width: 160vw;
+  height: auto;
+  display: block;
+
+  /* Mask: fog fades in from top (peaks stay sharp),
+     reaches full density in the valley, fades at base */
+  mask-image: linear-gradient(
+    to bottom,
+    transparent       0%,
+    rgba(0,0,0,.35)  12%,
+    rgba(0,0,0,1)    32%,
+    rgba(0,0,0,1)    68%,
+    transparent     100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent       0%,
+    rgba(0,0,0,.35)  12%,
+    rgba(0,0,0,1)    32%,
+    rgba(0,0,0,1)    68%,
+    transparent     100%
+  );
+
+  animation: fogDrift 150s ease-in-out infinite alternate;
 }
 
-.route {
-  fill: none;
-  stroke: var(--stroke);
-  stroke-width: 7;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-dasharray: 2000;
-  stroke-dashoffset: 2000;
-  animation: draw 2.2s cubic-bezier(.2,.8,.2,1) .3s forwards;
+@keyframes fogDrift {
+  from { transform: translateX(0);     opacity: 0.85; }
+  to   { transform: translateX(-24vw); opacity: 1.0;  }
 }
 
-.r2     { stroke: var(--stroke2); stroke-width: 6; animation-delay: .5s; }
-.r3     { stroke: rgba(255,255,255,.05); stroke-width: 5; animation-delay: .7s; }
-.r-out1 { stroke-width: 5; animation-delay: 2.4s; animation-duration: 1.6s; }
-.r-out2 { stroke: rgba(255,255,255,.05); stroke-width: 4; animation-delay: 2.6s; animation-duration: 1.6s; }
-
-.node {
-  fill: rgba(255,255,255,.40);
-  opacity: 0;
-  transform-origin: center;
-  animation: nodePop .9s ease forwards;
-}
-
-.n1 { animation-delay: 2.2s; }
-.n2 { animation-delay: 2.4s; }
-.n3 { animation-delay: 2.6s; }
-
-/* ── Layer 5 — Content ────────────────────────────────── */
+/* ── Layer 4: content ─────────────────────────────────── */
 
 .content {
   width: min(980px, 92vw);
   text-align: center;
   position: relative;
-  z-index: 4;
+  z-index: 3;
 }
 
 .brand {
@@ -155,8 +125,7 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: 0.36em;
   text-transform: uppercase;
   font-size: clamp(40px, 8vw, 92px);
-  margin-bottom: 28px;
-  /* Multi-layer shadow anchors text above landscape without a card */
+  margin-bottom: 32px;
   text-shadow:
     0 0  50px rgba(0,0,0,.85),
     0 0 100px rgba(0,0,0,.55),
@@ -166,20 +135,6 @@ a { color: inherit; text-decoration: none; }
   animation: riseFade 1.0s ease .2s forwards;
 }
 
-.descriptor {
-  font-size: clamp(14px, 1.7vw, 19px);
-  font-weight: 400;
-  color: var(--muted2);
-  max-width: 620px;
-  margin: 0 auto 22px;
-  line-height: 1.65;
-  letter-spacing: 0.01em;
-  text-shadow: 0 1px 16px rgba(0,0,0,.85);
-  opacity: 0;
-  transform: translateY(10px);
-  animation: riseFade .8s ease .9s forwards;
-}
-
 .tagline {
   max-width: 860px;
   margin: 0 auto;
@@ -187,12 +142,12 @@ a { color: inherit; text-decoration: none; }
 }
 
 .t1 {
-  font-size: clamp(18px, 2.3vw, 27px);
+  font-size: clamp(17px, 2.1vw, 26px);
   color: var(--muted);
-  text-shadow: 0 1px 16px rgba(0,0,0,.85);
+  text-shadow: 0 1px 18px rgba(0,0,0,.85);
   opacity: 0;
   transform: translateY(10px);
-  animation: riseFade .8s ease 1.5s forwards;
+  animation: riseFade .8s ease .9s forwards;
 }
 
 /* ── Principle section ────────────────────────────────── */
@@ -236,41 +191,16 @@ a { color: inherit; text-decoration: none; }
 
 /* ── Keyframes ────────────────────────────────────────── */
 
-@keyframes routeIn {
-  from { opacity: 0; }
-  to   { opacity: .75; }
-}
-
-@keyframes draw {
-  to { stroke-dashoffset: 0; }
-}
-
 @keyframes riseFade {
   to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes nodePop {
-  0%   { opacity: 0;   transform: scale(.65); }
-  60%  { opacity: .85; transform: scale(1.08); }
-  100% { opacity: .55; transform: scale(1);   }
-}
-
-@keyframes fogA {
-  from { transform: translate(  0%,  0%) scale(1.00); }
-  to   { transform: translate(-12%,  7%) scale(1.08); }
-}
-
-@keyframes fogB {
-  from { transform: translate(  0%,  0%) scale(1.00); }
-  to   { transform: translate(  9%, -8%) scale(0.94); }
 }
 
 /* ── Mobile ───────────────────────────────────────────── */
 
 @media (max-width: 720px) {
-  /* Shift background right to keep dominant peak in frame */
   .hero {
     padding: 40px 20px;
+    /* Shift right to keep dominant peak in frame on portrait */
     background-position: 72% 30%;
   }
 
@@ -278,21 +208,16 @@ a { color: inherit; text-decoration: none; }
     letter-spacing: 0.22em;
   }
 
-  .descriptor {
-    font-size: clamp(14px, 3.8vw, 17px);
-    max-width: 90vw;
-  }
-
   .t1 {
-    font-size: clamp(17px, 4.4vw, 22px);
+    font-size: clamp(16px, 4.2vw, 21px);
   }
 
-  /* Slightly thicker strokes compensate for scaled-up SVG on narrow screens */
-  .route  { stroke-width: 10; }
-  .r2     { stroke-width: 9;  }
-  .r3     { stroke-width: 8;  }
-  .r-out1 { stroke-width: 8;  }
-  .r-out2 { stroke-width: 7;  }
+  /* Wider fog on narrow viewports — maintains coverage and drift room */
+  .fog-img {
+    top: 46%;
+    left: -60vw;
+    width: 220vw;
+  }
 
   .principle {
     min-height: auto;
@@ -308,24 +233,15 @@ a { color: inherit; text-decoration: none; }
 /* ── Reduced motion ───────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
-  .bgLines,
-  .route,
-  .node,
   .brand,
-  .descriptor,
   .t1 {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
-    stroke-dashoffset: 0 !important;
   }
 
-  .bgLines {
-    opacity: .75 !important;
-  }
-
-  .layer-fog::before,
-  .layer-fog::after {
+  .fog-img {
     animation: none !important;
+    opacity: .92 !important;
   }
 }
