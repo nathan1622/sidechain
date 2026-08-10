@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# /signature/ is an internal tool. It is kept out of search results by the
+# noindex meta tag on the page itself, not by a Disallow rule here — a blocked
+# crawler never reads the tag and may list the bare URL anyway.
+
+Sitemap: https://sidechain.global/sitemap.xml
