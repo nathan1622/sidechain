@@ -418,7 +418,7 @@
         </div>
 
         <div class="field">
-          <label for="f-tel">Mobile <span class="opt">— optional</span></label>
+          <label for="f-tel">Mobile <span class="opt">— optional, spaced out for you</span></label>
           <input type="tel" id="f-tel" placeholder="+32 472 34 96 24">
         </div>
 
@@ -517,6 +517,48 @@
 
   const telHref = (s) => s.replace(/[^\d+]/g, '');
 
+  const group = (s, sizes) => {
+    const out = [];
+    let i = 0;
+    for (const n of sizes) { out.push(s.slice(i, i + n)); i += n; }
+    if (i < s.length) out.push(s.slice(i));
+    return out.filter(Boolean).join(' ');
+  };
+
+  // Tidies a phone number into international form. Belgian and Dutch numbers get
+  // proper grouping; anything else keeps the country code and is left alone,
+  // because inventing groups for a country we cannot identify reads worse than
+  // leaving the number as the person typed it.
+  function formatPhone(raw) {
+    const typed = String(raw).trim();
+    if (!typed) return '';
+
+    let d = typed.replace(/\(0\)/g, '').replace(/[^\d+]/g, '');
+    if (d.startsWith('00')) d = '+' + d.slice(2);
+
+    // A leading zero means a national number. 06 is a Dutch mobile, 04 a Belgian
+    // one — both ten digits, so the second digit is what tells them apart.
+    if (/^0\d/.test(d)) d = (d.startsWith('06') ? '+31' : '+32') + d.slice(1);
+    if (!d.startsWith('+')) return typed;
+
+    if (d.startsWith('+32')) {
+      const n = d.slice(3);
+      if (n.length === 9 && /^4[5-9]/.test(n)) return '+32 ' + group(n, [3, 2, 2, 2]);
+      if (n.length === 8 && /^[2349]/.test(n))  return '+32 ' + group(n, [1, 3, 2, 2]);
+      if (n.length === 8)                        return '+32 ' + group(n, [2, 2, 2, 2]);
+      return '+32 ' + n;
+    }
+
+    if (d.startsWith('+31')) {
+      const n = d.slice(3);
+      if (n.length === 9 && n.startsWith('6')) return '+31 ' + group(n, [1, 2, 2, 2, 2]);
+      if (n.length === 9)                      return '+31 ' + group(n, [2, 3, 2, 2]);
+      return '+31 ' + n;
+    }
+
+    return d;
+  }
+
   const resolveDomain = () => els.domain.value.trim()
     .replace(/^https?:\/\//i, '')
     .replace(/^www\./i, '')
@@ -530,7 +572,7 @@
     const domain  = resolveDomain();
     const local   = els.mail.value.trim().replace(/@.*$/, '');
     const address   = (local && domain) ? local + '@' + domain : '';
-    const tel     = els.tel.value.trim();
+    const tel     = formatPhone(els.tel.value);
     const li      = els.li.value.trim();
     const logo    = els.logo.value.trim() || LOGO_EMBED;
 
@@ -637,6 +679,16 @@
   }
 
   Object.values(els).forEach((el) => el.addEventListener('input', render));
+
+  // Tidy the number once the field loses focus. Reformatting on every keystroke
+  // would shove the cursor around while someone is still typing.
+  els.tel.addEventListener('blur', () => {
+    const tidy = formatPhone(els.tel.value);
+    if (tidy !== els.tel.value) {
+      els.tel.value = tidy;
+      render();
+    }
+  });
 
   document.getElementById('btn-copy').addEventListener('click', (e) => copyRich(e.currentTarget));
   document.getElementById('btn-html').addEventListener('click', (e) => copySource(e.currentTarget));
