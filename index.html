@@ -26,7 +26,7 @@
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
-    <link rel="stylesheet" href="style.css?v=21" />
+    <link rel="stylesheet" href="style.css?v=22" />
   </head>
 
   <body>
@@ -60,7 +60,92 @@
         <p class="pillars">PEOPLE · EXPERIENCE · EXECUTION · SYSTEMS · LEARNING</p>
       </section>
 
+      <!-- Scroll cue — the page continues below the hero -->
+      <div class="scrollCue" aria-hidden="true"></div>
+
     </main>
+
+
+    <!-- ── What we do ───────────────────────────────────────
+         Numbered offer blocks. Revealed on scroll by the
+         IntersectionObserver below; visible without JS. -->
+    <section class="work" aria-labelledby="work-title">
+      <div class="wrap">
+        <h2 class="sectionLabel" id="work-title">What we do</h2>
+
+        <ol class="offer">
+          <li class="offerItem reveal">
+            <span class="offerNum" aria-hidden="true">01</span>
+            <div class="offerBody">
+              <h3 class="offerTitle">Crew &amp; delivery</h3>
+              <p class="offerText">
+                Engineers and technicians for live productions, matched on skill and
+                temperament rather than availability alone. We carry the whole run —
+                preparation, the floor, and the wash-up afterwards.
+              </p>
+            </div>
+          </li>
+
+          <li class="offerItem reveal">
+            <span class="offerNum" aria-hidden="true">02</span>
+            <div class="offerBody">
+              <h3 class="offerTitle">Systems &amp; tooling</h3>
+              <p class="offerText">
+                The software underneath the work: planning, purchase orders and margin
+                on one side, rigging loads, coverage and frequency coordination on the
+                other. Built in-house, because the ready-made tools stop exactly where
+                the work gets interesting.
+              </p>
+            </div>
+          </li>
+
+          <li class="offerItem reveal">
+            <span class="offerNum" aria-hidden="true">03</span>
+            <div class="offerBody">
+              <h3 class="offerTitle">Learning on the job</h3>
+              <p class="offerText">
+                People grow on real shows, next to someone who owns the outcome.
+                Structured, paid, and measured by what the room hears — not by
+                hours in a classroom.
+              </p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ── Who plugs in ─────────────────────────────────── -->
+    <section class="audience" aria-labelledby="audience-title">
+      <div class="wrap">
+        <h2 class="sectionLabel" id="audience-title">Who plugs in</h2>
+
+        <div class="audienceGrid">
+          <div class="audienceCol reveal">
+            <h3 class="audienceTitle">Clients</h3>
+            <p class="audienceText">
+              One point of contact for a production that has outgrown a spreadsheet.
+              You get the crew, the numbers and the accountability from the same place.
+            </p>
+          </div>
+
+          <div class="audienceCol reveal">
+            <h3 class="audienceTitle">Crew</h3>
+            <p class="audienceText">
+              Clear briefs, honest rates and purchase orders that arrive before the job,
+              not months after it. Work you can put your name on.
+            </p>
+          </div>
+
+          <div class="audienceCol reveal">
+            <h3 class="audienceTitle">Partners</h3>
+            <p class="audienceText">
+              Suppliers and fellow companies we route work to and take work from.
+              Fewer intermediaries, shorter lines, the same standard on both sides.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <section class="principle" aria-label="Contact">
       <p class="contactAmbient">
@@ -122,6 +207,30 @@
         } else {
           video.addEventListener('loadedmetadata', tick, { once: true });
         }
+      }());
+    </script>
+    <script>
+      // Scroll reveal. Elements are visible by default; this hides them first so
+      // a page without JS (or with the observer unsupported) simply shows everything.
+      (function () {
+        if (!('IntersectionObserver' in window)) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        const items = document.querySelectorAll('.reveal');
+        items.forEach((el, i) => {
+          el.classList.add('isHidden');
+          el.style.transitionDelay = (i % 3) * 0.12 + 's';
+        });
+
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.remove('isHidden');
+            io.unobserve(entry.target);
+          });
+        }, { rootMargin: '0px 0px -12% 0px', threshold: 0.15 });
+
+        items.forEach((el) => io.observe(el));
       }());
     </script>
   </body>

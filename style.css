@@ -244,3 +244,143 @@ a { color: inherit; text-decoration: none; }
     transform: none !important;
   }
 }
+
+/* ── Content sections ─────────────────────────────────── */
+
+.wrap {
+  width: min(980px, 88vw);
+  margin: 0 auto;
+}
+
+.work,
+.audience {
+  background: var(--bg);
+  padding: 96px 0;
+}
+
+.audience {
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+
+.sectionLabel {
+  font-size: clamp(10px, 1.2vw, 12px);
+  font-weight: 400;
+  letter-spacing: 0.30em;
+  text-transform: uppercase;
+  color: var(--muted2);
+  margin-bottom: 56px;
+}
+
+/* Offer list */
+
+.offer {
+  list-style: none;
+  display: grid;
+  gap: 56px;
+}
+
+.offerItem {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  align-items: start;
+  gap: 8px;
+}
+
+.offerNum {
+  font-size: clamp(11px, 1.3vw, 13px);
+  letter-spacing: 0.18em;
+  color: rgba(255,255,255,.30);
+  padding-top: 6px;
+}
+
+.offerTitle {
+  font-size: clamp(19px, 2.2vw, 26px);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  margin-bottom: 14px;
+}
+
+.offerText {
+  font-size: clamp(15px, 1.5vw, 17px);
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--muted2);
+  max-width: 62ch;
+}
+
+/* Audience columns */
+
+.audienceGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px;
+}
+
+.audienceTitle {
+  font-size: clamp(11px, 1.2vw, 13px);
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.audienceText {
+  font-size: clamp(14px, 1.4vw, 16px);
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--muted2);
+}
+
+/* Scroll reveal — .reveal is the resting (visible) state; JS adds .isHidden
+   before observing, so anything without JS simply stays visible. */
+
+.reveal.isHidden {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.reveal {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity .7s ease, transform .7s ease;
+}
+
+/* Scroll cue — the hero is no longer the whole page, so say so.
+   Fades in after the hero sequence has finished. */
+
+.scrollCue {
+  position: absolute;
+  z-index: 4;
+  bottom: 28px;
+  left: 50%;
+  width: 1px;
+  height: 44px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,.45));
+  opacity: 0;
+  animation: opacityFade 1.2s ease 5.0s forwards;
+  pointer-events: none;
+}
+
+@media (max-width: 720px) {
+  .work,
+  .audience      { padding: 72px 0; }
+  .sectionLabel  { margin-bottom: 40px; }
+  .offer         { gap: 44px; }
+  .offerItem     { grid-template-columns: 40px 1fr; }
+  .audienceGrid  { grid-template-columns: 1fr; gap: 40px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal.isHidden {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .scrollCue {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+}
