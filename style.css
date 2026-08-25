@@ -258,12 +258,12 @@ a { color: inherit; text-decoration: none; }
 }
 
 .work,
-.audience {
+.learning {
   background: var(--bg);
   padding: 96px 0;
 }
 
-.audience {
+.learning {
   border-top: 1px solid rgba(255,255,255,.08);
 }
 
@@ -315,28 +315,37 @@ a { color: inherit; text-decoration: none; }
   max-width: 62ch;
 }
 
-/* Audience columns */
+/* Lead line under the section label */
 
-.audienceGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 48px;
-}
-
-.audienceTitle {
-  font-size: clamp(11px, 1.2vw, 13px);
-  font-weight: 400;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+.lead {
+  text-wrap: balance;
+  font-size: clamp(17px, 1.9vw, 21px);
+  font-weight: 300;
+  line-height: 1.5;
   color: var(--muted);
-  margin-bottom: 16px;
+  max-width: 46ch;
+  margin: -24px 0 56px;
 }
 
-.audienceText {
-  font-size: clamp(14px, 1.4vw, 16px);
+/* Learning — a statement, not a pitch, so it gets room and no numbering */
+
+.learningLine {
+  text-wrap: balance;
+  font-size: clamp(20px, 2.6vw, 30px);
+  font-weight: 300;
+  line-height: 1.35;
+  color: var(--fg);
+  max-width: 22ch;
+  margin-bottom: 28px;
+}
+
+.learningText {
+  text-wrap: pretty;
+  font-size: clamp(15px, 1.5vw, 17px);
   font-weight: 300;
   line-height: 1.65;
   color: var(--muted2);
+  max-width: 58ch;
 }
 
 /* Scroll reveal — .reveal is the resting (visible) state; JS adds .isHidden
@@ -371,11 +380,11 @@ a { color: inherit; text-decoration: none; }
 
 @media (max-width: 720px) {
   .work,
-  .audience      { padding: 72px 0; }
+  .learning      { padding: 72px 0; }
   .sectionLabel  { margin-bottom: 40px; }
   .offer         { gap: 44px; }
   .offerItem     { grid-template-columns: 40px 1fr; }
-  .audienceGrid  { grid-template-columns: 1fr; gap: 40px; }
+  .lead          { margin: -16px 0 40px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
