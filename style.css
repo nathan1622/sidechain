@@ -1,4 +1,11 @@
-/* Base */
+/* ═══════════════════════════════════════════════════════════════════════
+   Sidechain — one continuous cinematic scene.
+
+   The landscape is fixed. The content scrolls through it. There are no
+   opaque section backgrounds anywhere: readability is bought with black
+   gradients only, so the mountain is never covered up, only dimmed.
+   ═══════════════════════════════════════════════════════════════════════ */
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
@@ -6,397 +13,430 @@
   --fg:     #fff;
   --muted:  rgba(255,255,255,.82);
   --muted2: rgba(255,255,255,.50);
+
+  /* Scroll progress 0 → 1, written by JS. Falls back to 0 without JS. */
+  --sp: 0;
 }
 
 html {
-  height: 100%;
   background: var(--bg);
   color: var(--fg);
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  /* System stack only — no webfont, so the site makes zero third-party requests. */
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  /* System stack only — no webfont, so the site makes zero third-party
+     requests and there is no flash of unstyled text over the landscape. */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue",
+               Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: geometricPrecision;
+  overflow-x: hidden;
 }
 
 a { color: inherit; text-decoration: none; }
 
-/* ── Hero ─────────────────────────────────────────────── */
 
-.hero {
-  min-height: 100svh;
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
+/* ═══ FIXED ENVIRONMENT ══════════════════════════════════════════════ */
+
+.env {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
   overflow: hidden;
-  position: relative;
-  padding: 48px 20px;
+  pointer-events: none;
+  background: #000;
+}
 
-  /* hero.jpg: always present as background.
-     Visible on mobile, reduced-motion, and while video first frame loads. */
+/* hero.jpg is the base layer: it is what shows on mobile, under reduced
+   motion, and in any browser that will not decode the video. The video
+   sits on top of it, so a failed decode degrades to a still frame. */
+.env-media {
+  position: absolute;
+  inset: -4vh -4vw;                 /* bleed, so parallax never shows an edge */
   background-image: url('hero.jpg');
   background-size: cover;
-  background-position: center 30%;
+  background-position: center 34%;
   background-repeat: no-repeat;
+
+  /* Extremely subtle depth: 1.00 → 1.07 over the whole page. */
+  transform: scale(calc(1 + 0.07 * var(--sp)))
+             translateY(calc(-2vh * var(--sp)));
+  transform-origin: 50% 40%;
+  will-change: transform;
 }
 
-/* Dark readability overlay — static, always on */
-.hero::before {
-  content: '';
+/* The source clip carries a watermark in the bottom right corner. The video
+   box is drawn taller than its container and anchored to the top, so the last
+   ~130px of the frame falls outside .env (overflow: hidden) and is never seen.
+   Raise the offset if the watermark ever reappears. */
+.env-video {
   position: absolute;
-  inset: 0;
-  z-index: 2;
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,.42)  0%,
-    rgba(0,0,0,.08) 22%,
-    rgba(0,0,0,.10) 55%,
-    rgba(0,0,0,.82) 82%,
-    rgba(0,0,0,1.0) 100%
-  );
-  pointer-events: none;
-}
-
-/* ── Video ────────────────────────────────────────────── */
-
-.hero-video {
-  position: absolute;
-  z-index: 1;
   top: 0;
   left: 0;
   width: 100%;
-
-  /* CSS watermark crop: extends 80px below hero.
-     hero has overflow:hidden — extra height is clipped.
-     Adjust 80px if watermark remains visible. */
-  height: calc(100% + 80px);
+  height: calc(100% + 130px);
   object-fit: cover;
   object-position: center top;
-  pointer-events: none;
 }
 
-/* ── Loop mask ────────────────────────────────────────── */
+/* ── Mist ─────────────────────────────────────────────────────────────
+   Two soft white fields drifting across each other on long, offset
+   cycles. This is where most of the "the world is moving" feeling comes
+   from, and it is the only motion that survives when the video does not
+   play at all. */
 
-/* Starts black. JS intentionally reveals the video on first play (0.6s delay,
-   1.0s fade) and fades it back to black before each loop cut to hide the seam,
-   then reveals again with a shorter 0.8s fade.
-   If video/JS is unavailable, mask is hidden via reduced-motion CSS — hero.jpg shows. */
-.hero-loop-mask {
+.env-mist {
+  position: absolute;
+  inset: -20%;
+  opacity: .5;
+  mix-blend-mode: screen;
+}
+
+.env-mist-a {
+  background: radial-gradient(45% 30% at 30% 55%, rgba(255,255,255,.10), rgba(255,255,255,0) 70%),
+              radial-gradient(35% 22% at 72% 40%, rgba(255,255,255,.07), rgba(255,255,255,0) 70%);
+  animation: driftA 90s ease-in-out infinite alternate;
+}
+
+.env-mist-b {
+  background: radial-gradient(55% 26% at 60% 68%, rgba(255,255,255,.08), rgba(255,255,255,0) 72%),
+              radial-gradient(30% 18% at 18% 30%, rgba(255,255,255,.06), rgba(255,255,255,0) 70%);
+  animation: driftB 130s ease-in-out infinite alternate;
+}
+
+@keyframes driftA {
+  from { transform: translate3d(-3%, 1%, 0) scale(1.00); }
+  to   { transform: translate3d( 4%, -2%, 0) scale(1.08); }
+}
+
+@keyframes driftB {
+  from { transform: translate3d( 3%, -1%, 0) scale(1.06); }
+  to   { transform: translate3d(-4%, 2%, 0) scale(1.00); }
+}
+
+/* ── Veil ─────────────────────────────────────────────────────────────
+   Global readability dimmer. Light over the opening, heavier through the
+   chapters where there is more to read, so the page walks from open sky
+   into deeper weather as it is read. */
+
+.env-veil {
   position: absolute;
   inset: 0;
-  z-index: 3;
-  background: #000;
-  pointer-events: none;
-  opacity: 1;
+  background:
+    linear-gradient(to bottom,
+      rgba(0,0,0,.55) 0%,
+      rgba(0,0,0,.12) 26%,
+      rgba(0,0,0,.14) 62%,
+      rgba(0,0,0,.72) 92%,
+      rgba(0,0,0,.90) 100%),
+    rgba(0,0,0,.30);
+  opacity: calc(.72 + .28 * var(--sp));
 }
 
-/* ── Logo ─────────────────────────────────────────────── */
 
-.hero-logo {
+/* ═══ RAIL ═══════════════════════════════════════════════════════════ */
+
+/* A bare progress hairline. It deliberately carries no number: the chapter
+   labels already show 01–05, and a number here landed on the same line as
+   the label it was repeating. */
+.rail {
+  position: fixed;
+  z-index: 3;
+  left: max(22px, 2.4vw);
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.railTrack {
   display: block;
-  margin: 0 auto 28px;
-  width: 120px;
+  position: relative;
+  width: 1px;
+  height: 140px;
+  background: rgba(255,255,255,.14);
+}
+
+.railFill {
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,.55);
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+
+/* ═══ SCROLLING CONTENT ══════════════════════════════════════════════ */
+
+.scroll {
+  position: relative;
+  z-index: 2;
+}
+
+/* Each chapter gets more than a screen, so a statement is never rushed
+   past and never shares the viewport with the next one. */
+.ch {
+  /* Per-section visibility, 0 → 1 → 0 as the section crosses the viewport.
+     JS overwrites it as an inline style; declared here so a page without JS
+     simply shows every chapter at full strength. */
+  --v: 1;
+
+  position: relative;
+  min-height: 108vh;
+  min-height: 108svh;
+  display: grid;
+  align-items: center;
+  padding: 14vh max(24px, 6vw) 14vh max(64px, 9vw);
+}
+
+.ch-hero,
+.ch-close {
+  min-height: 100vh;
+  min-height: 100svh;
+  justify-items: center;
+  text-align: center;
+  padding-left: max(24px, 6vw);
+}
+
+/* --v is per-section visibility, 0 → 1 → 0 as it crosses the viewport.
+   Set to 1 by CSS here so a page without JS shows everything. */
+.chInner {
+  position: relative;
+  width: min(760px, 100%);
+  min-width: 0;
+  max-width: 100%;
+  opacity: var(--v);
+  transform: translateY(calc(22px * (1 - var(--v))));
+}
+
+.is-live .chInner {
+  opacity: calc(.06 + .94 * var(--v));
+}
+
+.chInner-center { width: min(900px, 100%); }
+
+/* Local readability wash. A wide, soft, off-centre ellipse rather than a
+   panel: it darkens the landscape behind the words without ever reading
+   as a box drawn on top of it. */
+.chInner::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -12vh -22vw -12vh -18vw;
+  background: radial-gradient(60% 52% at 34% 50%,
+              rgba(0,0,0,.86), rgba(0,0,0,.42) 52%, rgba(0,0,0,0) 78%);
+  opacity: var(--v);
+  pointer-events: none;
+}
+
+.chInner-center::before {
+  inset: -14vh -20vw;
+  background: radial-gradient(58% 54% at 50% 50%,
+              rgba(0,0,0,.72), rgba(0,0,0,.30) 54%, rgba(0,0,0,0) 78%);
+}
+
+
+/* ── Opening ─────────────────────────────────────────────────────────── */
+
+.mark {
+  display: block;
+  margin: 0 auto 22px;
+  width: 76px;
   height: auto;
   filter: invert(1);
-  animation: logoSettle 1.4s ease-in-out forwards;
+  opacity: .92;
 }
 
-/* ── Content ──────────────────────────────────────────── */
-
-.content {
-  width: min(980px, 92vw);
-  text-align: center;
-  position: relative;
-  z-index: 4;
-}
-
-.brand {
-  font-weight: 800;
-  letter-spacing: 0.36em;
-  text-transform: uppercase;
-  font-size: clamp(40px, 8vw, 92px);
-  margin-bottom: 32px;
-  text-shadow:
-    0 0  50px rgba(0,0,0,.85),
-    0 0 100px rgba(0,0,0,.55),
-    0 2px  6px rgba(0,0,0,.70);
-  opacity: 0;
-  animation: opacityFade 0.8s ease 1.0s forwards;
-}
-
-.tagline {
-  text-wrap: balance;
-  max-width: 860px;
-  margin: 0 auto;
-  line-height: 1.35;
-}
-
-.t1 {
-  font-size: clamp(18px, 2.4vw, 28px);
-  color: rgba(255,255,255,.88);
-  text-shadow: 0 0 30px rgba(0,0,0,.95), 0 1px 8px rgba(0,0,0,.80);
-  opacity: 0;
-  animation: opacityFade 0.8s ease 2.0s forwards;
-}
-
-.t2 {
-  font-size: clamp(15px, 1.9vw, 24px);
-  font-weight: 300;
-  color: rgba(255,255,255,.70);
-  text-shadow: 0 0 30px rgba(0,0,0,.95), 0 1px 8px rgba(0,0,0,.80);
-  margin-top: 20px;
-  opacity: 0;
-  animation: opacityFade 0.8s ease 3.0s forwards;
-}
-
-.pillars {
-  font-size: clamp(10px, 1.2vw, 13px);
-  letter-spacing: 0.30em;
-  color: rgba(255,255,255,.55);
-  text-transform: uppercase;
-  margin-top: 44px;
-  opacity: 0;
-  animation: opacityFade 0.8s ease 4.0s forwards;
-}
-
-/* ── Principle section ────────────────────────────────── */
-
-.principle {
-  padding: 80px 24px;
-  text-align: center;
-  background: var(--bg);
-}
-
-.contactAmbient {
-  font-size: clamp(13px, 1.4vw, 15px);
-  color: var(--muted2);
-  letter-spacing: 0.10em;
-}
-
-.contactAmbient a {
-  border-bottom: 1px solid rgba(255,255,255,.20);
-  padding-bottom: 2px;
-  transition: color .2s ease, border-bottom-color .2s ease;
-}
-
-.contactAmbient a:hover {
-  color: var(--fg);
-  border-bottom-color: rgba(255,255,255,.55);
-}
-
-/* ── Keyframes ────────────────────────────────────────── */
-
-/* Logo: holds centered (large), then glides up to final position above wordmark.
-   translateY offset is tuned so scale(2) places the logo approximately at hero center.
-   Separate mobile keyframe uses a smaller offset to match the shorter content block. */
-@keyframes opacityFade {
-  to { opacity: 1; }
-}
-
-@keyframes logoSettle {
-  0%, 36%  { transform: translateY(105px) scale(2); }
-  100%     { transform: translateY(0) scale(1); }
-}
-
-@keyframes logoSettleMobile {
-  0%, 36%  { transform: translateY(78px) scale(2); }
-  100%     { transform: translateY(0) scale(1); }
-}
-
-@keyframes riseFade {
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ── Mobile — video off, hero.jpg on ─────────────────── */
-
-@media (max-width: 720px) {
-  .hero {
-    padding: 40px 20px;
-    background-position: 72% 30%;
-  }
-
-  .hero-logo { width: 85px; margin-bottom: 20px; animation-name: logoSettleMobile; }
-  .brand     { letter-spacing: 0.22em; }
-  .t1        { font-size: clamp(17px, 4.5vw, 22px); }
-  .t2        { font-size: clamp(14px, 4.0vw, 19px); }
-}
-
-/* ── Reduced motion — video off, hero.jpg on ─────────── */
-
-@media (prefers-reduced-motion: no-preference) {
-  html { scroll-behavior: smooth; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-video,
-  .hero-loop-mask {
-    display: none;
-  }
-
-  .hero-logo {
-    animation: none !important;
-    transform: none !important;
-  }
-
-  .brand,
-  .t1,
-  .t2,
-  .pillars {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-  }
-}
-
-/* ── Content sections ─────────────────────────────────── */
-
-.wrap {
-  width: min(980px, 88vw);
-  margin: 0 auto;
-}
-
-.work,
-.learning {
-  background: var(--bg);
-  padding: 96px 0;
-}
-
-.learning {
-  border-top: 1px solid rgba(255,255,255,.08);
-}
-
-.sectionLabel {
-  font-size: clamp(10px, 1.2vw, 12px);
-  font-weight: 400;
-  letter-spacing: 0.30em;
-  text-transform: uppercase;
-  color: var(--muted2);
-  margin-bottom: 56px;
-}
-
-/* Offer list */
-
-.offer {
-  list-style: none;
-  display: grid;
-  gap: 56px;
-}
-
-.offerItem {
-  display: grid;
-  grid-template-columns: 64px 1fr;
-  align-items: start;
-  gap: 8px;
-}
-
-.offerNum {
-  font-size: clamp(11px, 1.3vw, 13px);
-  letter-spacing: 0.18em;
-  color: rgba(255,255,255,.30);
-  padding-top: 6px;
-}
-
-.offerTitle {
-  text-wrap: balance;
-  font-size: clamp(19px, 2.2vw, 26px);
+/* The wordmark identifies. The statement carries the message, so the
+   wordmark is deliberately the smaller of the two. */
+.wordmark {
+  font-size: clamp(11px, 1.5vw, 14px);
   font-weight: 500;
-  letter-spacing: 0.02em;
-  margin-bottom: 14px;
+  letter-spacing: 0.36em;
+  text-indent: 0.36em;
+  color: rgba(255,255,255,.72);
+  margin-bottom: clamp(40px, 8vh, 76px);
 }
 
-.offerText {
-  text-wrap: pretty;
-  font-size: clamp(15px, 1.5vw, 17px);
-  font-weight: 300;
-  line-height: 1.65;
-  color: var(--muted2);
-  max-width: 62ch;
-}
-
-/* Lead line under the section label */
-
-.lead {
+.statement {
   text-wrap: balance;
-  font-size: clamp(17px, 1.9vw, 21px);
-  font-weight: 300;
-  line-height: 1.5;
-  color: var(--muted);
-  max-width: 46ch;
-  margin: -24px 0 56px;
+  font-size: clamp(38px, 7.4vw, 92px);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+  text-shadow: 0 0 60px rgba(0,0,0,.85), 0 2px 14px rgba(0,0,0,.65);
 }
 
-/* Learning — a statement, not a pitch, so it gets room and no numbering */
-
-.learningLine {
-  text-wrap: balance;
-  font-size: clamp(20px, 2.6vw, 30px);
-  font-weight: 300;
-  line-height: 1.35;
-  color: var(--fg);
-  max-width: 22ch;
-  margin-bottom: 28px;
+.elements {
+  font-size: clamp(10px, 1.2vw, 13px);
+  font-weight: 400;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.62);
+  margin-top: clamp(34px, 6vh, 60px);
+  text-shadow: 0 0 24px rgba(0,0,0,.9);
 }
 
-.learningText {
-  text-wrap: pretty;
-  font-size: clamp(15px, 1.5vw, 17px);
-  font-weight: 300;
-  line-height: 1.65;
-  color: var(--muted2);
-  max-width: 58ch;
-}
-
-/* Scroll reveal — .reveal is the resting (visible) state; JS adds .isHidden
-   before observing, so anything without JS simply stays visible. */
-
-.reveal.isHidden {
-  opacity: 0;
-  transform: translateY(18px);
-}
-
-.reveal {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity .7s ease, transform .7s ease;
-}
-
-/* Scroll cue — the hero is no longer the whole page, so say so.
-   Fades in after the hero sequence has finished. */
-
-.scrollCue {
+.cue {
   position: absolute;
-  z-index: 4;
-  bottom: 28px;
+  z-index: 2;
+  bottom: max(28px, 4vh);
   left: 50%;
   width: 1px;
-  height: 44px;
+  height: 48px;
   background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,.45));
-  opacity: 0;
-  animation: opacityFade 1.2s ease 5.0s forwards;
   pointer-events: none;
 }
 
-@media (max-width: 720px) {
-  .work,
-  .learning      { padding: 72px 0; }
-  .sectionLabel  { margin-bottom: 40px; }
-  .offer         { gap: 44px; }
-  .offerItem     { grid-template-columns: 40px 1fr; }
-  .lead          { margin: -16px 0 40px; }
+
+/* ── Chapters ────────────────────────────────────────────────────────── */
+
+.chLabel {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: clamp(9px, 1.1vw, 11px);
+  letter-spacing: 0.30em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.60);
+  margin-bottom: clamp(22px, 4vh, 38px);
 }
+
+.chNum   { color: rgba(255,255,255,.38); }
+.chRule  { width: clamp(28px, 6vw, 72px); height: 1px; background: rgba(255,255,255,.26); }
+
+.chHead {
+  text-wrap: balance;
+  font-size: clamp(30px, 5.2vw, 64px);
+  font-weight: 400;
+  line-height: 1.14;
+  letter-spacing: -0.012em;
+  text-shadow: 0 0 50px rgba(0,0,0,.85), 0 2px 12px rgba(0,0,0,.6);
+}
+
+.chNote {
+  text-wrap: pretty;
+  font-size: clamp(15px, 1.5vw, 18px);
+  font-weight: 300;
+  line-height: 1.62;
+  /* Not --muted2: at .50 this sat right on the edge of readable where the
+     landscape behind it is a lit slope rather than sky. */
+  color: rgba(255,255,255,.66);
+  max-width: 44ch;
+  margin-top: clamp(22px, 4vh, 36px);
+  text-shadow: 0 0 24px rgba(0,0,0,.9);
+}
+
+
+/* ── Technology drawing ──────────────────────────────────────────────── */
+
+.ch-tech { overflow: hidden; }
+
+/* Anchored high right, in the sky rather than over the lit slope: thin white
+   strokes disappear entirely against a bright mountain face. */
+.plot {
+  position: absolute;
+  z-index: -1;
+  right: -2vw;
+  top: 8vh;
+  width: min(560px, 52vw);
+  height: auto;
+  opacity: calc(.42 * var(--v, 1));
+  pointer-events: none;
+}
+
+.plotVenue { stroke: rgba(255,255,255,.70); stroke-width: 1; }
+.plotArc   { stroke: rgba(255,255,255,.90); stroke-width: .8; }
+.plotRay   { stroke: rgba(255,255,255,.40); stroke-width: .6; stroke-dasharray: 3 5; }
+.plotNode  { fill: rgba(255,255,255,.85); }
+
+
+/* ── Closing ─────────────────────────────────────────────────────────── */
+
+.ch-close { min-height: 100vh; }
+
+.statement-close { font-size: clamp(32px, 6vw, 76px); }
+
+.contact {
+  font-size: clamp(14px, 1.5vw, 17px);
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  margin-top: clamp(36px, 6vh, 58px);
+}
+
+.contact a {
+  border-bottom: 1px solid rgba(255,255,255,.24);
+  padding-bottom: 3px;
+  transition: color .25s ease, border-bottom-color .25s ease;
+}
+
+.contact a:hover {
+  color: var(--fg);
+  border-bottom-color: rgba(255,255,255,.6);
+}
+
+.elements-close { margin-top: clamp(48px, 9vh, 90px); }
+
+
+/* ═══ MOBILE ═════════════════════════════════════════════════════════
+   Video off below 720px: a fixed, looping video behind a scrolling page
+   is the single most expensive thing on a phone, and hero.jpg with the
+   drifting mist keeps the environment alive at a fraction of the cost. */
+
+@media (max-width: 720px) {
+  .env-video { display: none; }
+
+  .env-media {
+    background-position: 68% 34%;
+    transform: scale(calc(1 + 0.05 * var(--sp)));
+  }
+
+  .rail { display: none; }
+
+  .ch {
+    min-height: 100svh;
+    padding: 16vh 24px;
+  }
+
+  .chInner::before { inset: -10vh -30vw; }
+
+  /* Sized so the forced line breaks in the copy still fit a 390px screen:
+     the longest line is "What the production needs." */
+  .wordmark  { letter-spacing: 0.28em; text-indent: 0.28em; }
+  .statement { font-size: clamp(28px, 8.4vw, 52px); }
+  .chHead    { font-size: clamp(22px, 6vw, 42px); }
+  .chNote    { font-size: 15px; }
+  .elements  { letter-spacing: 0.16em; font-size: 10px; }
+
+  .plot {
+    right: -18vw;
+    top: 6vh;
+    width: 86vw;
+    opacity: calc(.24 * var(--v, 1));
+  }
+}
+
+
+/* ═══ REDUCED MOTION ═════════════════════════════════════════════════
+   No video, no drift, no parallax, no scroll-driven fading. The same
+   page, standing still, with the veil at a fixed readable weight. */
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal,
-  .reveal.isHidden {
+  .env-video { display: none; }
+  .env-mist  { animation: none; }
+  .env-media { transform: none; }
+  .env-veil  { opacity: .88; }
+
+  .chInner,
+  .is-live .chInner {
     opacity: 1 !important;
     transform: none !important;
-    transition: none !important;
   }
 
-  .scrollCue {
-    animation: none !important;
-    opacity: 1 !important;
-  }
+  .chInner::before,
+  .plot { opacity: 1; }
+
+  .plot { opacity: .22; }
 }
+
+.is-still .env-video { display: none; }

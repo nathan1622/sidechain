@@ -2,33 +2,33 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
-    <title>Sidechain — Audio production: people, gear and tools</title>
+    <title>Sidechain — Audio production end to end</title>
 
     <meta
       name="description"
-      content="Audio production from one place: the people, the gear, and the tools we write ourselves. Real work for people who want to learn."
+      content="Audio production end to end. People, knowledge, gear and technology for live production."
     />
 
     <link rel="canonical" href="https://sidechain.global" />
 
-    <meta property="og:title" content="Sidechain — Audio production" />
-    <meta property="og:description" content="Audio production from one place: the people, the gear, and the tools we write ourselves. Real work for people who want to learn." />
+    <meta property="og:title" content="Sidechain — Audio production end to end" />
+    <meta property="og:description" content="Audio production end to end. People, knowledge, gear and technology for live production." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://sidechain.global" />
     <meta property="og:image" content="https://sidechain.global/og-card.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Sidechain — plug in where complexity starts." />
+    <meta property="og:image:alt" content="Sidechain — audio production end to end." />
     <meta property="og:site_name" content="Sidechain" />
     <meta property="og:locale" content="en" />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Sidechain — Audio production" />
-    <meta name="twitter:description" content="Audio production from one place: the people, the gear, and the tools we write ourselves. Real work for people who want to learn." />
+    <meta name="twitter:title" content="Sidechain — Audio production end to end" />
+    <meta name="twitter:description" content="Audio production end to end. People, knowledge, gear and technology for live production." />
     <meta name="twitter:image" content="https://sidechain.global/og-card.png" />
-    <meta name="twitter:image:alt" content="Sidechain — plug in where complexity starts." />
+    <meta name="twitter:image:alt" content="Sidechain — audio production end to end." />
 
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -36,7 +36,8 @@
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#000000" />
 
-    <link rel="stylesheet" href="style.css?v=26" />
+    <link rel="stylesheet" href="style.css?v=30" />
+
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -45,7 +46,7 @@
         "url": "https://sidechain.global",
         "logo": "https://sidechain.global/brand/icon-512.png",
         "image": "https://sidechain.global/og-card.png",
-        "description": "Audio production from one place: the people, the gear, and the tools we write ourselves. Real work for people who want to learn.",
+        "description": "Audio production end to end. People, knowledge, gear and technology for live production.",
         "email": "hello@sidechain.global",
         "knowsAbout": ["Live audio production", "Sound system design", "RF coordination", "Audio crew"],
         "address": { "@type": "PostalAddress", "addressCountry": "BE" }
@@ -54,193 +55,273 @@
   </head>
 
   <body>
-    <main class="hero">
 
-      <!-- Video hero — desktop only.
-           Falls back to hero.jpg on mobile and prefers-reduced-motion. -->
-      <video
-        class="hero-video"
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="metadata"
-        aria-hidden="true"
-      >
-        <source src="hero-video.mp4" type="video/mp4" />
-      </video>
+    <!-- ═══ FIXED ENVIRONMENT ═══════════════════════════════════════════
+         Never scrolls. The whole page is read through this one landscape.
+         Layers, back to front:
+           .env-media  mountain video (hero.jpg underneath as the base and
+                       the fallback for mobile, reduced motion, no-codec)
+           .env-mist   two drifting cloud fields, 90s and 130s cycles
+           .env-veil   black readability overlay, opacity driven by scroll
+    -->
+    <div class="env" aria-hidden="true">
+      <div class="env-media">
+        <video
+          class="env-video"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="auto"
+        >
+          <!-- HEVC first: 1.1 MB and sharp, played by Safari and by Chrome
+               on macOS. Browsers that cannot decode it skip the source on the
+               codecs string and fall through to the 3.4 MB H.264 below, which
+               is what Firefox and most Windows machines will take. -->
+          <source src="hero-video.mp4" type="video/mp4; codecs=hvc1" />
+          <source src="hero-video-h264.mp4" type="video/mp4; codecs=avc1.4d401f" />
+        </video>
+      </div>
 
-      <!-- Loop mask — opacity driven by JS from video.currentTime.
-           Starts fully black (opacity:1 in CSS); JS takes over immediately.
-           If JS is unavailable, mask stays black and hero.jpg shows through. -->
-      <div class="hero-loop-mask" aria-hidden="true"></div>
+      <div class="env-mist env-mist-a"></div>
+      <div class="env-mist env-mist-b"></div>
+      <div class="env-veil"></div>
+    </div>
 
-      <!-- Content -->
-      <section class="content" aria-label="Sidechain">
-        <img class="hero-logo" src="logo.svg" width="120" height="120" alt="" aria-hidden="true" />
-        <h1 class="brand">SIDECHAIN</h1>
-        <p class="tagline t1">Plug in where complexity starts.</p>
-        <p class="tagline t2">Audio production: people, gear and tools.</p>
-        <p class="pillars">PEOPLE · GEAR · TOOLS · LEARNING</p>
+
+    <!-- ═══ FIXED RAIL ══════════════════════════════════════════════════
+         A hairline that fills as the page is read. The only persistent
+         interface element on the page.
+    -->
+    <div class="rail" aria-hidden="true">
+      <span class="railTrack"><span class="railFill"></span></span>
+    </div>
+
+
+    <!-- ═══ SCROLLING CONTENT ═══════════════════════════════════════════ -->
+    <main class="scroll">
+
+      <!-- ── Opening ────────────────────────────────────────────────── -->
+      <section class="ch ch-hero" data-chapter="00">
+        <div class="chInner chInner-center">
+          <img class="mark" src="logo.svg" width="76" height="76" alt="" />
+          <p class="wordmark">SIDECHAIN</p>
+
+          <h1 class="statement">
+            Audio production<br />
+            end to end.
+          </h1>
+
+          <p class="elements">People. Knowledge. Gear. Technology.</p>
+        </div>
+
+        <div class="cue" aria-hidden="true"></div>
       </section>
 
-      <!-- Scroll cue — the page continues below the hero -->
-      <div class="scrollCue" aria-hidden="true"></div>
+
+      <!-- ── 01 Production ──────────────────────────────────────────── -->
+      <section class="ch" data-chapter="01">
+        <div class="chInner">
+          <p class="chLabel">
+            <span class="chNum">01</span>
+            <span class="chRule"></span>
+            <span class="chName">Production</span>
+          </p>
+
+          <h2 class="chHead">
+            From first plan<br />
+            to final signal.
+          </h2>
+        </div>
+      </section>
+
+
+      <!-- ── 02 People ──────────────────────────────────────────────── -->
+      <section class="ch" data-chapter="02">
+        <div class="chInner">
+          <p class="chLabel">
+            <span class="chNum">02</span>
+            <span class="chRule"></span>
+            <span class="chName">People</span>
+          </p>
+
+          <h2 class="chHead">
+            The right crew<br />
+            for the job.
+          </h2>
+        </div>
+      </section>
+
+
+      <!-- ── 03 Knowledge ───────────────────────────────────────────── -->
+      <section class="ch" data-chapter="03">
+        <div class="chInner">
+          <p class="chLabel">
+            <span class="chNum">03</span>
+            <span class="chRule"></span>
+            <span class="chName">Knowledge</span>
+          </p>
+
+          <h2 class="chHead">
+            Experience applied.<br />
+            Knowledge passed on.
+          </h2>
+
+          <p class="chNote">
+            Learning happens inside real, paid productions, next to someone
+            carrying the responsibility.
+          </p>
+        </div>
+      </section>
+
+
+      <!-- ── 04 Gear ────────────────────────────────────────────────── -->
+      <section class="ch" data-chapter="04">
+        <div class="chInner">
+          <p class="chLabel">
+            <span class="chNum">04</span>
+            <span class="chRule"></span>
+            <span class="chName">Gear</span>
+          </p>
+
+          <h2 class="chHead">
+            What the production needs.<br />
+            Nothing more.
+          </h2>
+        </div>
+      </section>
+
+
+      <!-- ── 05 Technology ──────────────────────────────────────────────
+           The only chapter carrying a drawing. Coverage arcs over a venue
+           footprint, thin and unlabelled: the tools shown, not claimed.
+           No numbers — invented figures read as fake to this audience.
+      -->
+      <section class="ch ch-tech" data-chapter="05">
+        <svg class="plot" viewBox="0 0 520 360" fill="none" aria-hidden="true">
+          <!-- venue footprint in perspective -->
+          <path class="plotVenue" d="M120 300 L400 300 L470 130 L50 130 Z" />
+          <path class="plotVenue" d="M175 215 L345 215" />
+
+          <!-- source position -->
+          <circle class="plotNode" cx="260" cy="118" r="2.5" />
+
+          <!-- coverage arcs spreading from the source -->
+          <path class="plotArc" d="M150 300 Q260 232 370 300" />
+          <path class="plotArc" d="M120 300 Q260 200 400 300" />
+          <path class="plotArc" d="M96 286 Q260 168 424 286" />
+          <path class="plotArc" d="M74 262 Q260 136 446 262" />
+
+          <!-- signal lines from the source to the coverage edges -->
+          <path class="plotRay" d="M260 118 L74 262" />
+          <path class="plotRay" d="M260 118 L446 262" />
+          <path class="plotRay" d="M260 118 L260 300" />
+        </svg>
+
+        <div class="chInner">
+          <p class="chLabel">
+            <span class="chNum">05</span>
+            <span class="chRule"></span>
+            <span class="chName">Technology</span>
+          </p>
+
+          <h2 class="chHead">
+            Better tools for<br />
+            planning and production.
+          </h2>
+
+          <p class="chNote">
+            Planning, costing, coverage and RF prediction, written in house
+            because nothing on the market did the job.
+          </p>
+        </div>
+      </section>
+
+
+      <!-- ── Closing ────────────────────────────────────────────────── -->
+      <section class="ch ch-close" data-chapter="06">
+        <div class="chInner chInner-center">
+          <h2 class="statement statement-close">
+            Audio production<br />
+            end to end.
+          </h2>
+
+          <p class="contact">
+            <a href="mailto:hello@sidechain.global">hello@sidechain.global</a>
+          </p>
+
+          <p class="elements elements-close">People. Knowledge. Gear. Technology.</p>
+        </div>
+      </section>
 
     </main>
 
 
-    <!-- ── One stop for audio production ────────────────
-         The lead line carries the software claim, because it is the one
-         thing the competition cannot copy. The three blocks keep the
-         people / gear / tools order. -->
-    <section class="work" aria-labelledby="work-title">
-      <div class="wrap">
-        <h2 class="sectionLabel" id="work-title">One stop for your audio production</h2>
-        <p class="lead">
-          The people, the gear and the tools for live audio, from one place.
-          The tools we write ourselves.
-        </p>
-
-        <ol class="offer">
-          <li class="offerItem reveal">
-            <span class="offerNum" aria-hidden="true">01</span>
-            <div class="offerBody">
-              <h3 class="offerTitle">The right people</h3>
-              <p class="offerText">
-                Engineers, techs and operators for live audio. We know who we send.
-              </p>
-            </div>
-          </li>
-
-          <li class="offerItem reveal">
-            <span class="offerNum" aria-hidden="true">02</span>
-            <div class="offerBody">
-              <h3 class="offerTitle">The right gear</h3>
-              <p class="offerText">
-                Consoles, PA, wireless, comms. We work out what the room needs and we
-                get it there. One order instead of three rental houses.
-              </p>
-            </div>
-          </li>
-
-          <li class="offerItem reveal">
-            <span class="offerNum" aria-hidden="true">03</span>
-            <div class="offerBody">
-              <h3 class="offerTitle">The right tools</h3>
-              <p class="offerText">
-                We write our own software. Rigging loads and coverage before the truck
-                is loaded, frequency plans that survive a full band, and the planning
-                and costing behind the job. We built it because what we could buy did
-                not do it.
-              </p>
-            </div>
-          </li>
-        </ol>
-      </div>
-    </section>
-
-    <!-- ── Learning ─────────────────────────────────────
-         Written against the category: the big audio companies run formal
-         paid apprenticeships. This is deliberately not that. -->
-    <section class="learning" aria-labelledby="learning-title">
-      <div class="wrap">
-        <h2 class="sectionLabel" id="learning-title">Learning</h2>
-        <div class="reveal">
-          <p class="learningLine">You do not learn much by carrying cases.</p>
-          <p class="learningText">
-            There is no programme here and no classroom. People who want to learn get
-            real jobs, paid, next to someone who carries the responsibility. It is how
-            most of us learned it ourselves.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section class="principle" aria-label="Contact">
-      <p class="contactAmbient">
-        <a href="mailto:hello@sidechain.global">hello@sidechain.global</a>
-      </p>
-    </section>
-
     <script>
       (function () {
-        const video = document.querySelector('.hero-video');
-        const mask  = document.querySelector('.hero-loop-mask');
+        'use strict';
 
-        // Bail out if elements are missing (e.g. mobile where video is display:none)
-        if (!video || !mask) return;
+        var root    = document.documentElement;
+        var still   = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var sections = Array.prototype.slice.call(document.querySelectorAll('.ch'));
+        var railFill = document.querySelector('.railFill');
 
-        // Respect system motion preferences — JS exits; CSS hides video+mask, hero.jpg shows
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-        const FADE_IN  = 0.8;  // seconds: black → clear after each loop cut (loop 2+)
-        const FADE_OUT = 1.8;  // seconds: clear → black before loop cut (cinematic)
-        let   firstPlay = true; // first play: hold black 0.6s, then reveal over 1.0s
-
-        // Smooth cubic easing — makes the opacity change feel organic, not linear
-        function easeInOutCubic(t) {
-          return t < 0.5
-            ? 4 * t * t * t
-            : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        // Reduced motion: everything visible, nothing driven by scroll.
+        if (still) {
+          root.classList.add('is-still');
+          sections.forEach(function (s) { s.style.setProperty('--v', 1); });
+          return;
         }
 
-        function tick() {
-          const t   = video.currentTime;
-          const dur = video.duration;
-          let opacity = 1; // default black — JS-driven fade reveals video
+        root.classList.add('is-live');
 
-          if (dur && !isNaN(dur)) {
-            if (firstPlay && t < 1.6) {
-              // First play: hold black until 0.6s, fade to clear by 1.6s
-              opacity = 1 - easeInOutCubic(Math.max(0, t - 0.6) / 1.0);
-            } else if (!firstPlay && t < FADE_IN) {
-              // After loop cut: immediate fade from black to clear
-              opacity = 1 - easeInOutCubic(t / FADE_IN);
-            } else if (dur - t < FADE_OUT) {
-              // Before loop cut: fades from clear to black
-              opacity = 1 - easeInOutCubic((dur - t) / FADE_OUT);
-              firstPlay = false;
-            } else {
-              // Middle: fully transparent — video plays unobstructed
-              opacity = 0;
-            }
+        var queued = false;
+
+        function frame() {
+          queued = false;
+
+          var vh   = window.innerHeight;
+          var max  = Math.max(1, document.body.scrollHeight - vh);
+          var page = Math.min(1, Math.max(0, window.scrollY / max));
+
+          // Page progress: drives the veil, the parallax and the rail fill.
+          root.style.setProperty('--sp', page.toFixed(4));
+          if (railFill) railFill.style.transform = 'scaleY(' + page.toFixed(4) + ')';
+
+          // Per-section visibility: 1 at the centre of the viewport, easing to
+          // 0 as the section's midpoint reaches either edge. Content surfaces
+          // out of the landscape and sinks back into it.
+          for (var i = 0; i < sections.length; i++) {
+            var s   = sections[i];
+            var box = s.getBoundingClientRect();
+            var mid = box.top + box.height / 2;
+            var d   = Math.abs(mid - vh / 2) / (vh * 0.72);
+            var v   = Math.min(1, Math.max(0, 1 - d));
+
+            v = v * v * (3 - 2 * v); // smoothstep
+            s.style.setProperty('--v', v.toFixed(3));
           }
-
-          mask.style.opacity = opacity;
-          requestAnimationFrame(tick);
         }
 
-        // Start as soon as duration is known
-        if (video.readyState >= 1) {
-          tick();
-        } else {
-          video.addEventListener('loadedmetadata', tick, { once: true });
+        function onScroll() {
+          if (queued) return;
+          queued = true;
+          requestAnimationFrame(frame);
         }
-      }());
-    </script>
-    <script>
-      // Scroll reveal. Elements are visible by default; this hides them first so
-      // a page without JS (or with the observer unsupported) simply shows everything.
-      (function () {
-        if (!('IntersectionObserver' in window)) return;
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-        const items = document.querySelectorAll('.reveal');
-        items.forEach((el, i) => {
-          el.classList.add('isHidden');
-          el.style.transitionDelay = (i % 3) * 0.12 + 's';
-        });
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll);
+        frame();
 
-        const io = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-            entry.target.classList.remove('isHidden');
-            io.unobserve(entry.target);
+        // Half speed: the clouds drift instead of racing. The source clip is
+        // ~5s, which reads as a loop at 1x and as weather at 0.5x.
+        var video = document.querySelector('.env-video');
+        if (video) {
+          video.playbackRate = 0.5;
+          video.play().catch(function () {
+            // Autoplay refused (iOS low power, data saver). hero.jpg stays.
           });
-        }, { rootMargin: '0px 0px -12% 0px', threshold: 0.15 });
-
-        items.forEach((el) => io.observe(el));
+        }
       }());
     </script>
   </body>
