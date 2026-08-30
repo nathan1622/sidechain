@@ -324,8 +324,8 @@ a { color: inherit; text-decoration: none; }
   margin-bottom: clamp(26px, 4.6vh, 44px);
 }
 
-.chNum   { color: rgba(255,255,255,.38); }
-.chRule  { width: clamp(36px, 7.5vw, 108px); height: 1px; background: rgba(255,255,255,.26); }
+.chNum   { color: rgba(255,255,255,.75); font-weight: 600; }
+.chRule  { width: clamp(36px, 7.5vw, 108px); height: 2px; background: rgba(255,255,255,.55); }
 
 /* The pillar name carries the section, so it is sized as a heading in its own
    right. The number and the rule stay at label size beside it. */
