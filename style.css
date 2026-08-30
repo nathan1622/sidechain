@@ -350,9 +350,9 @@ a { color: inherit; text-decoration: none; }
 }
 
 
-/* ── Technology drawing ──────────────────────────────────────────────── */
+/* ── Engineering drawing ─────────────────────────────────────────────── */
 
-.ch-tech { overflow: hidden; }
+.ch-eng { overflow: hidden; }
 
 /* Anchored high right, in the sky rather than over the lit slope: thin white
    strokes disappear entirely against a bright mountain face. */
