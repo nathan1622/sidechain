@@ -330,9 +330,9 @@ a { color: inherit; text-decoration: none; }
 /* The pillar name carries the section, so it is sized as a heading in its own
    right. The number and the rule stay at label size beside it. */
 .chName {
-  font-size: clamp(14px, 1.8vw, 20px);
-  letter-spacing: 0.26em;
-  color: rgba(255,255,255,.80);
+  font-size: clamp(17px, 2.5vw, 30px);
+  letter-spacing: 0.22em;
+  color: rgba(255,255,255,.88);
   text-shadow: 0 0 24px rgba(0,0,0,.9);
 }
 
@@ -438,7 +438,7 @@ a { color: inherit; text-decoration: none; }
   .heroLine  { font-size: 17px; }
   .statement { font-size: clamp(28px, 8.4vw, 52px); }
   .chHead    { font-size: clamp(20px, 5.5vw, 38px); }
-  .chName    { font-size: 14px; letter-spacing: 0.20em; }
+  .chName    { font-size: 17px; letter-spacing: 0.18em; }
   .chNote    { font-size: 15px; }
   .elements  { letter-spacing: 0.16em; font-size: 10px; }
 
