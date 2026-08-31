@@ -613,7 +613,22 @@ h1, h2 { color: var(--fg); font-weight: inherit; }
 .msgStatus.is-warn { color: var(--muted); }
 .msgStatus a { border-bottom: 1px solid rgba(255,255,255,.3); }
 
-.msgDone { color: var(--muted); }
+.msgDone {
+  color: var(--muted);
+  margin-top: clamp(10px, 2vh, 18px);
+}
+
+.msgDoneTitle {
+  display: block;
+  font-size: clamp(22px, 3.2vw, 38px);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+  color: var(--fg);
+  margin-bottom: clamp(12px, 2vh, 18px);
+  text-shadow: 0 0 50px rgba(0,0,0,.85), 0 2px 12px rgba(0,0,0,.6);
+}
 
 
 /* ═══ MOBILE ═════════════════════════════════════════════════════════

@@ -22,7 +22,7 @@
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#000000" />
 
-    <link rel="stylesheet" href="/style.css?v=34" />
+    <link rel="stylesheet" href="/style.css?v=35" />
 
     <script type="application/ld+json">
       {
@@ -170,9 +170,14 @@
             .then(function (r) { return r.json(); })
             .then(function (r) {
               if (!r.success) throw new Error(r.message || 'refused');
+              // Answer in the register the site closes on, not a toast. The
+              // details below the form stay put, so the way to reach anyone
+              // is still on screen.
               form.innerHTML =
-                '<p class="msgDone">Message sent. You will hear back from ' +
-                'hello@sidechain.global.</p>';
+                '<p class="msgDone">' +
+                '<span class="msgDoneTitle">Message sent</span>' +
+                'You will hear back from hello@sidechain.global' +
+                '</p>';
             })
             .catch(function () {
               btn.disabled = false;
