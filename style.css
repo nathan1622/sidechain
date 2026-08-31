@@ -86,9 +86,19 @@ a { color: inherit; text-decoration: none; }
    from, and it is the only motion that survives when the video does not
    play at all. */
 
+/* Scrolling pushes the cloud field across and down: the weather moves
+   because you moved, not only because time passed. The wrapper carries the
+   scroll transform, the children carry their own animation. */
+.env-weather {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(calc(-8vw * var(--sp)), calc(3vh * var(--sp)), 0);
+  will-change: transform;
+}
+
 .env-mist {
   position: absolute;
-  inset: -20%;
+  inset: -34%;
   opacity: .5;
   mix-blend-mode: screen;
 }
@@ -467,8 +477,9 @@ a { color: inherit; text-decoration: none; }
    page, standing still, with the veil at a fixed readable weight. */
 
 @media (prefers-reduced-motion: reduce) {
-  .env-video { display: none; }
-  .env-mist  { animation: none; }
+  .env-video   { display: none; }
+  .env-mist    { animation: none; }
+  .env-weather { transform: none; }
   .env-media { transform: none; }
   .env-veil  { opacity: .88; }
 

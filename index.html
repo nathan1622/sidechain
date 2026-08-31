@@ -85,8 +85,13 @@
         </video>
       </div>
 
-      <div class="env-mist env-mist-a"></div>
-      <div class="env-mist env-mist-b"></div>
+      <!-- The cloud field. Its own slow drift runs on the two children; the
+           wrapper is what scrolling moves, so the two never fight over the
+           same transform. -->
+      <div class="env-weather">
+        <div class="env-mist env-mist-a"></div>
+        <div class="env-mist env-mist-b"></div>
+      </div>
       <div class="env-veil"></div>
     </div>
 
@@ -277,6 +282,7 @@
         'use strict';
 
         var root    = document.documentElement;
+        var video   = document.querySelector('.env-video');
         var still   = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         var sections = Array.prototype.slice.call(document.querySelectorAll('.ch'));
         var railFill = document.querySelector('.railFill');
@@ -292,12 +298,25 @@
 
         var queued = false;
 
+        // Scroll speeds the sky up and eases it back down. Rate is chased
+        // rather than set, so a flick of the wheel is a gust and not a jump.
+        var REST_RATE = 0.5;
+        var MAX_RATE  = 2.3;
+        var lastY     = window.scrollY;
+        var rate      = REST_RATE;
+        var gust      = 0;
+
         function frame() {
           queued = false;
 
           var vh   = window.innerHeight;
           var max  = Math.max(1, document.body.scrollHeight - vh);
           var page = Math.min(1, Math.max(0, window.scrollY / max));
+
+          // Distance moved since the last frame, in screens per frame.
+          var moved = Math.abs(window.scrollY - lastY) / vh;
+          lastY = window.scrollY;
+          gust  = Math.max(gust * 0.90, Math.min(1, moved * 9));
 
           // Page progress: drives the veil, the parallax and the rail fill.
           root.style.setProperty('--sp', page.toFixed(4));
@@ -316,6 +335,12 @@
             v = v * v * (3 - 2 * v); // smoothstep
             s.style.setProperty('--v', v.toFixed(3));
           }
+
+          if (video && video.readyState > 0) {
+            var target = REST_RATE + (MAX_RATE - REST_RATE) * gust;
+            rate += (target - rate) * 0.10;
+            video.playbackRate = rate;
+          }
         }
 
         function onScroll() {
@@ -328,11 +353,9 @@
         window.addEventListener('resize', onScroll);
         frame();
 
-        // Half speed: the clouds drift instead of racing. The source clip is
-        // ~5s, which reads as a loop at 1x and as weather at 0.5x.
-        var video = document.querySelector('.env-video');
+        // Half speed at rest: the clouds drift instead of racing.
         if (video) {
-          video.playbackRate = 0.5;
+          video.playbackRate = REST_RATE;
           video.play().catch(function () {
             // Autoplay refused (iOS low power, data saver). hero.jpg stays.
           });
