@@ -22,7 +22,7 @@
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#000000" />
 
-    <link rel="stylesheet" href="/style.css?v=32" />
+    <link rel="stylesheet" href="/style.css?v=33" />
 
     <script type="application/ld+json">
       {
@@ -88,6 +88,32 @@
 
           <p class="tel"><a href="tel:+32472349624">+32 472 34 96 24</a></p>
 
+          <!-- Posts by fetch and confirms in place: nobody leaves the page
+               and no mail client opens. Needs an access key in the script
+               below before it can actually send. -->
+          <form class="msg" id="msg" novalidate>
+            <div class="field">
+              <label for="f-name">Name</label>
+              <input id="f-name" name="name" type="text" autocomplete="name" required />
+            </div>
+
+            <div class="field">
+              <label for="f-mail">Email</label>
+              <input id="f-mail" name="email" type="email" autocomplete="email" required />
+            </div>
+
+            <div class="field">
+              <label for="f-msg">Message</label>
+              <textarea id="f-msg" name="message" rows="4" required></textarea>
+            </div>
+
+            <!-- Bots fill this in; people never see it. -->
+            <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" />
+
+            <button class="btn" type="submit">Send</button>
+            <p class="msgStatus" id="msgStatus" role="status" aria-live="polite"></p>
+          </form>
+
           <!-- The identification a Belgian business site has to carry. The
                registered entity is still Sound Waves, so it is named here
                rather than quietly replaced by the brand. -->
@@ -104,6 +130,62 @@
     </main>
 
     <script>
+      // ── Message form ────────────────────────────────────────────────
+      // Replace with the access key from web3forms.com. Until then a send
+      // fails and the fallback points at the address instead.
+      var FORM_KEY = 'REPLACE_WITH_ACCESS_KEY';
+
+      (function () {
+        var form   = document.getElementById('msg');
+        var status = document.getElementById('msgStatus');
+        if (!form) return;
+
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+
+          var btn  = form.querySelector('button');
+          var data = Object.fromEntries(new FormData(form).entries());
+
+          if (!data.name || !data.email || !data.message) {
+            status.className = 'msgStatus is-warn';
+            status.textContent = 'Name, email and a message, please.';
+            return;
+          }
+
+          btn.disabled = true;
+          status.className = 'msgStatus';
+          status.textContent = 'Sending';
+
+          fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({
+              access_key: FORM_KEY,
+              subject: 'Message from sidechain.global',
+              from_name: 'Sidechain website',
+              name: data.name,
+              email: data.email,
+              message: data.message,
+              botcheck: data.botcheck || ''
+            })
+          })
+            .then(function (r) { return r.json(); })
+            .then(function (r) {
+              if (!r.success) throw new Error(r.message || 'refused');
+              form.innerHTML =
+                '<p class="msgDone">Message sent. You will hear back from ' +
+                'hello@sidechain.global.</p>';
+            })
+            .catch(function () {
+              btn.disabled = false;
+              status.className = 'msgStatus is-warn';
+              status.innerHTML =
+                'That did not go through. Mail it to ' +
+                '<a href="mailto:hello@sidechain.global">hello@sidechain.global</a> instead.';
+            });
+        });
+      }());
+
       // The landscape only needs to breathe here; there is nothing to scroll
       // through, so the page carries no scroll coupling.
       (function () {
