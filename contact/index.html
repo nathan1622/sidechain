@@ -131,9 +131,10 @@
 
     <script>
       // ── Message form ────────────────────────────────────────────────
-      // Replace with the access key from web3forms.com. Until then a send
-      // fails and the fallback points at the address instead.
-      var FORM_KEY = 'REPLACE_WITH_ACCESS_KEY';
+      // Web3Forms access key. Public by design — it only identifies which
+      // form a submission belongs to, and the endpoint accepts it from the
+      // browser. If a send is refused the fallback points at the address.
+      var FORM_KEY = '48a53cae-e78b-4d18-bea0-d893c89e3eb8';
 
       (function () {
         var form   = document.getElementById('msg');
