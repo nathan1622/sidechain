@@ -417,21 +417,36 @@ h1, h2 { color: var(--fg); font-weight: inherit; }
 }
 
 .contact {
-  font-size: clamp(14px, 1.5vw, 17px);
-  color: var(--muted);
-  letter-spacing: 0.06em;
   margin-top: clamp(36px, 6vh, 58px);
 }
 
-.contact a {
-  border-bottom: 1px solid rgba(255,255,255,.24);
-  padding-bottom: 3px;
-  transition: color .25s ease, border-bottom-color .25s ease;
+/* A hairline rectangle in the same register as the pillars: uppercase, widely
+   tracked, no fill until it is pointed at. The only thing on the page that
+   responds to a cursor, which is what makes it read as the way out. */
+.btn {
+  display: inline-block;
+  padding: clamp(15px, 2vh, 20px) clamp(28px, 4vw, 44px);
+  border: 1px solid rgba(255,255,255,.34);
+  background: rgba(0,0,0,.28);
+  font-size: clamp(11px, 1.2vw, 13px);
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
+  text-transform: uppercase;
+  color: var(--fg);
+  transition: background-color .3s ease, border-color .3s ease, color .3s ease;
 }
 
-.contact a:hover {
-  color: var(--fg);
-  border-bottom-color: rgba(255,255,255,.6);
+.btn:hover,
+.btn:focus-visible {
+  background: rgba(255,255,255,.92);
+  border-color: rgba(255,255,255,.92);
+  color: #000;
+  outline: none;
+}
+
+.btn:focus-visible {
+  box-shadow: 0 0 0 3px rgba(0,0,0,.85);
 }
 
 .elements-close { margin-top: clamp(48px, 9vh, 90px); }
