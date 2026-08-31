@@ -30,8 +30,10 @@
     <meta name="twitter:image" content="https://sidechain.global/og-card.png" />
     <meta name="twitter:image:alt" content="Sidechain · audio production end to end" />
 
-    <link rel="icon" href="/favicon.ico" sizes="32x32" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <!-- The .ico really does carry 16, 32 and 48; say so rather than letting
+         a browser pick on a wrong declaration. -->
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#000000" />
