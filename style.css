@@ -449,13 +449,6 @@ h1, h2 { color: var(--fg); font-weight: inherit; }
   transition: background-color .3s ease, border-color .3s ease, color .3s ease;
 }
 
-/* Sits on the tracking of the label, so it reads as part of the word rather
-   than an icon stuck next to it. */
-.btnArrow {
-  margin-left: 0.15em;
-  font-weight: 400;
-}
-
 .btn:hover,
 .btn:focus-visible {
   background: rgba(255,255,255,.92);
@@ -466,25 +459,6 @@ h1, h2 { color: var(--fg); font-weight: inherit; }
 
 .btn:focus-visible {
   box-shadow: 0 0 0 3px rgba(0,0,0,.85);
-}
-
-.contactMail {
-  font-size: clamp(13px, 1.4vw, 15px);
-  color: var(--muted2);
-  letter-spacing: 0.06em;
-  margin-top: clamp(18px, 3vh, 26px);
-  text-shadow: 0 0 24px rgba(0,0,0,.9);
-}
-
-.contactMail a {
-  border-bottom: 1px solid rgba(255,255,255,.18);
-  padding-bottom: 2px;
-  transition: color .25s ease, border-bottom-color .25s ease;
-}
-
-.contactMail a:hover {
-  color: var(--fg);
-  border-bottom-color: rgba(255,255,255,.5);
 }
 
 .elements-close { margin-top: clamp(48px, 9vh, 90px); }
