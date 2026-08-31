@@ -452,12 +452,29 @@ h1, h2 { color: var(--fg); font-weight: inherit; }
 .elements-close { margin-top: clamp(48px, 9vh, 90px); }
 
 .place {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px clamp(14px, 2.2vw, 26px);
   font-size: clamp(10px, 1.1vw, 12px);
   letter-spacing: 0.20em;
   text-transform: uppercase;
   color: rgba(255,255,255,.38);
   margin-top: clamp(14px, 2.2vh, 20px);
   text-shadow: 0 0 24px rgba(0,0,0,.9);
+}
+
+.place a {
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+  transition: color .25s ease, border-bottom-color .25s ease;
+}
+
+.place a:hover,
+.place a:focus-visible {
+  color: rgba(255,255,255,.85);
+  border-bottom-color: rgba(255,255,255,.4);
+  outline: none;
 }
 
 
