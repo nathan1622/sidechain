@@ -74,12 +74,14 @@
           playsinline
           preload="auto"
         >
-          <!-- HEVC first: 1.1 MB and sharp, played by Safari and by Chrome
-               on macOS. Browsers that cannot decode it skip the source on the
-               codecs string and fall through to the 3.4 MB H.264 below, which
-               is what Firefox and most Windows machines will take. -->
-          <source src="hero-video.mp4" type="video/mp4; codecs=hvc1" />
-          <source src="hero-video-h264.mp4" type="video/mp4; codecs=avc1.4d401f" />
+          <!-- hero-loop.mp4 is the source clip followed by its own reverse,
+               so the last frame is one step from the first and the loop has
+               no cut in it. 10s at 0.5x reads as a 20s weather cycle.
+               H.264 only, and deliberately: the HEVC original would not
+               decode in Firefox or on most Windows machines, and one file
+               that behaves the same everywhere beats two that do not.
+               Rebuild it with _tools/pingpong.swift after replacing the clip. -->
+          <source src="hero-loop.mp4" type="video/mp4; codecs=avc1.4d401f" />
         </video>
       </div>
 
