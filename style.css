@@ -463,10 +463,13 @@ h1, h2 { color: var(--fg); font-weight: inherit; }
 }
 
 .backHome {
+  position: fixed;
+  z-index: 3;
+  top: max(22px, 3.2vh);
+  left: max(22px, 2.4vw);
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: clamp(40px, 8vh, 76px);
   opacity: .78;
   transition: opacity .25s ease;
 }
@@ -574,6 +577,8 @@ h1, h2 { color: var(--fg); font-weight: inherit; }
   .statement-close { font-size: clamp(21px, 6.4vw, 44px); letter-spacing: 0.03em; }
   .chHead    { font-size: clamp(20px, 5.5vw, 38px); }
   .mailBig   { font-size: clamp(19px, 5.6vw, 34px); }
+  .backMark  { width: 30px; }
+  .backWord  { font-size: 10px; letter-spacing: 0.22em; text-indent: 0.22em; }
   .ch-sum    { min-height: 112svh; }
   .chName    { font-size: 17px; letter-spacing: 0.18em; }
   .chNote    { font-size: 15px; }
