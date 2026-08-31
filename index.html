@@ -270,7 +270,10 @@
 
         // Scroll speeds the sky up and eases it back down. Rate is chased
         // rather than set, so a flick of the wheel is a gust and not a jump.
-        var REST_RATE = 0.28;   // 10s of clip stretched to ~36s at rest
+        // The clip is 24fps, so playing it at rate r shows 24r distinct frames
+        // a second. At 0.28 that is under 7, which the eye reads as judder.
+        // 0.55 keeps it slow and puts it back above 13.
+        var REST_RATE = 0.55;
         var MAX_RATE  = 1.5;
         var lastY     = window.scrollY;
         var rate      = REST_RATE;
@@ -309,7 +312,13 @@
           if (video && video.readyState > 0) {
             var target = REST_RATE + (MAX_RATE - REST_RATE) * gust;
             rate += (target - rate) * 0.045;
-            video.playbackRate = rate;
+
+            // Write it only when it has actually moved. Assigning
+            // playbackRate every frame makes the decoder re-time the stream
+            // sixty times a second for changes too small to see.
+            if (Math.abs(rate - video.playbackRate) > 0.02) {
+              video.playbackRate = rate;
+            }
           }
 
           // Keep the loop alive until the gust has died and the rate has
