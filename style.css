@@ -452,6 +452,97 @@ h1, h2 { color: var(--fg); font-weight: inherit; }
 .elements-close { margin-top: clamp(48px, 9vh, 90px); }
 
 
+/* ═══ CONTACT PAGE ═══════════════════════════════════════════════════
+   One screen in the same environment. The address is the largest thing on
+   it, because it is the only reason anyone is here. */
+
+.ch-contact {
+  min-height: 100vh;
+  min-height: 100svh;
+  align-content: center;
+}
+
+.backHome {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: clamp(40px, 8vh, 76px);
+  opacity: .78;
+  transition: opacity .25s ease;
+}
+
+.backHome:hover { opacity: 1; }
+
+.backMark {
+  width: 36px;
+  height: auto;
+  filter: invert(1);
+}
+
+.backWord {
+  font-size: clamp(11px, 1.2vw, 13px);
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-indent: 0.28em;
+  text-transform: uppercase;
+}
+
+.mailBig {
+  font-size: clamp(22px, 3.6vw, 46px);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+  word-break: break-word;
+  text-shadow: 0 0 50px rgba(0,0,0,.85), 0 2px 12px rgba(0,0,0,.6);
+}
+
+.mailBig a {
+  border-bottom: 1px solid rgba(255,255,255,.24);
+  padding-bottom: 4px;
+  transition: border-bottom-color .25s ease;
+}
+
+.mailBig a:hover { border-bottom-color: rgba(255,255,255,.7); }
+
+.tel {
+  font-size: clamp(15px, 1.6vw, 19px);
+  font-weight: 300;
+  color: var(--muted);
+  margin-top: clamp(20px, 3.5vh, 30px);
+  text-shadow: 0 0 24px rgba(0,0,0,.9);
+}
+
+.tel a:hover { color: var(--fg); }
+
+/* The identification a Belgian business site has to carry. Quiet, but
+   present and machine readable. */
+.details {
+  font-style: normal;
+  font-size: clamp(13px, 1.35vw, 15px);
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--muted2);
+  margin-top: clamp(40px, 7vh, 72px);
+  text-shadow: 0 0 24px rgba(0,0,0,.9);
+}
+
+.detailsName {
+  display: block;
+  color: var(--muted);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: clamp(11px, 1.15vw, 13px);
+  margin-bottom: 10px;
+}
+
+.detailsVat {
+  display: inline-block;
+  margin-top: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+
 /* ═══ MOBILE ═════════════════════════════════════════════════════════
    Video off below 720px: a fixed, looping video behind a scrolling page
    is the single most expensive thing on a phone, and hero.jpg with the
@@ -482,6 +573,7 @@ h1, h2 { color: var(--fg); font-weight: inherit; }
   .statement       { font-size: clamp(28px, 8.4vw, 52px); }
   .statement-close { font-size: clamp(21px, 6.4vw, 44px); letter-spacing: 0.03em; }
   .chHead    { font-size: clamp(20px, 5.5vw, 38px); }
+  .mailBig   { font-size: clamp(19px, 5.6vw, 34px); }
   .ch-sum    { min-height: 112svh; }
   .chName    { font-size: 17px; letter-spacing: 0.18em; }
   .chNote    { font-size: 15px; }

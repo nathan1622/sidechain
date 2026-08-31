@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+    <title>Contact · Sidechain</title>
+    <meta name="description" content="Contact Sidechain. Audio production end to end, from Belgium." />
+    <link rel="canonical" href="https://sidechain.global/contact/" />
+
+    <meta property="og:title" content="Contact · Sidechain" />
+    <meta property="og:description" content="Contact Sidechain. Audio production end to end, from Belgium." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://sidechain.global/contact/" />
+    <meta property="og:image" content="https://sidechain.global/og-card.png" />
+    <meta property="og:site_name" content="Sidechain" />
+    <meta property="og:locale" content="en" />
+
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#000000" />
+
+    <link rel="stylesheet" href="/style.css?v=30" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Sidechain",
+        "legalName": "Sound Waves",
+        "url": "https://sidechain.global",
+        "logo": "https://sidechain.global/brand/icon-512.png",
+        "email": "hello@sidechain.global",
+        "telephone": "+32472349624",
+        "vatID": "BE0670983741",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Donderveldstraat 33",
+          "postalCode": "3540",
+          "addressLocality": "Herk-de-Stad",
+          "addressCountry": "BE"
+        }
+      }
+    </script>
+  </head>
+
+  <body>
+
+    <!-- Same environment as the home page: the landscape does not restart or
+         change when you cross to this page. -->
+    <div class="env" aria-hidden="true">
+      <div class="env-media">
+        <video class="env-video" autoplay muted loop playsinline preload="auto">
+          <source src="/hero-loop.mp4" type="video/mp4; codecs=avc1.4d401f" />
+        </video>
+      </div>
+
+      <div class="env-weather">
+        <div class="env-mist env-mist-a"></div>
+        <div class="env-mist env-mist-b"></div>
+      </div>
+
+      <div class="env-veil"></div>
+    </div>
+
+
+    <main class="scroll">
+      <section class="ch ch-contact">
+        <div class="chInner">
+
+          <a class="backHome" href="/">
+            <img class="backMark" src="/logo.svg" width="40" height="40" alt="" />
+            <span class="backWord">Sidechain</span>
+          </a>
+
+          <p class="chLabel">
+            <span class="chRule"></span>
+            <span class="chName">Contact</span>
+          </p>
+
+          <h1 class="mailBig">
+            <a href="mailto:hello@sidechain.global">hello@sidechain.global</a>
+          </h1>
+
+          <p class="tel"><a href="tel:+32472349624">+32 472 34 96 24</a></p>
+
+          <!-- The identification a Belgian business site has to carry. The
+               registered entity is still Sound Waves, so it is named here
+               rather than quietly replaced by the brand. -->
+          <address class="details">
+            <span class="detailsName">Sidechain is a trading name of Sound Waves</span>
+            Donderveldstraat 33<br />
+            3540 Herk-de-Stad<br />
+            Belgium<br />
+            <span class="detailsVat">VAT BE 0670.983.741</span>
+          </address>
+
+        </div>
+      </section>
+    </main>
+
+    <script>
+      // The landscape only needs to breathe here; there is nothing to scroll
+      // through, so the page carries no scroll coupling.
+      (function () {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          document.documentElement.classList.add('is-still');
+          return;
+        }
+        var video = document.querySelector('.env-video');
+        if (!video) return;
+        video.playbackRate = 0.55;
+        video.play().catch(function () {});
+      }());
+    </script>
+  </body>
+</html>
