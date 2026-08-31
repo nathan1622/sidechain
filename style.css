@@ -86,7 +86,7 @@ h1, h2 { color: var(--fg); font-weight: inherit; }
 }
 
 /* ── Mist ─────────────────────────────────────────────────────────────
-   Two soft white fields drifting across each other on long, offset
+   Two soft white fields drifting across each other on very long, offset
    cycles. This is where most of the "the world is moving" feeling comes
    from, and it is the only motion that survives when the video does not
    play at all. */
@@ -111,13 +111,13 @@ h1, h2 { color: var(--fg); font-weight: inherit; }
 .env-mist-a {
   background: radial-gradient(45% 30% at 30% 55%, rgba(255,255,255,.10), rgba(255,255,255,0) 70%),
               radial-gradient(35% 22% at 72% 40%, rgba(255,255,255,.07), rgba(255,255,255,0) 70%);
-  animation: driftA 90s ease-in-out infinite alternate;
+  animation: driftA 165s ease-in-out infinite alternate;
 }
 
 .env-mist-b {
   background: radial-gradient(55% 26% at 60% 68%, rgba(255,255,255,.08), rgba(255,255,255,0) 72%),
               radial-gradient(30% 18% at 18% 30%, rgba(255,255,255,.06), rgba(255,255,255,0) 70%);
-  animation: driftB 130s ease-in-out infinite alternate;
+  animation: driftB 235s ease-in-out infinite alternate;
 }
 
 @keyframes driftA {

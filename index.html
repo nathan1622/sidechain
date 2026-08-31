@@ -298,8 +298,8 @@
 
         // Scroll speeds the sky up and eases it back down. Rate is chased
         // rather than set, so a flick of the wheel is a gust and not a jump.
-        var REST_RATE = 0.5;
-        var MAX_RATE  = 2.3;
+        var REST_RATE = 0.28;   // 10s of clip stretched to ~36s at rest
+        var MAX_RATE  = 1.5;
         var lastY     = window.scrollY;
         var rate      = REST_RATE;
         var gust      = 0;
@@ -314,7 +314,7 @@
           // Distance moved since the last frame, in screens per frame.
           var moved = Math.abs(window.scrollY - lastY) / vh;
           lastY = window.scrollY;
-          gust  = Math.max(gust * 0.90, Math.min(1, moved * 9));
+          gust  = Math.max(gust * 0.965, Math.min(1, moved * 9));
 
           // Page progress: drives the veil, the parallax and the rail fill.
           root.style.setProperty('--sp', page.toFixed(4));
@@ -336,9 +336,14 @@
 
           if (video && video.readyState > 0) {
             var target = REST_RATE + (MAX_RATE - REST_RATE) * gust;
-            rate += (target - rate) * 0.10;
+            rate += (target - rate) * 0.045;
             video.playbackRate = rate;
           }
+
+          // Keep the loop alive until the gust has died and the rate has
+          // settled. Without this the loop only ran on scroll events, so the
+          // sky stayed at whatever speed the last scroll left it at.
+          if (gust > 0.002 || Math.abs(rate - REST_RATE) > 0.004) onScroll();
         }
 
         function onScroll() {
