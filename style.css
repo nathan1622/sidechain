@@ -377,28 +377,6 @@ h1, h2 { color: var(--fg); font-weight: inherit; }
 }
 
 
-/* ── Engineering drawing ─────────────────────────────────────────────── */
-
-.ch-eng { overflow: hidden; }
-
-/* Anchored high right, in the sky rather than over the lit slope: thin white
-   strokes disappear entirely against a bright mountain face. */
-.plot {
-  position: absolute;
-  z-index: -1;
-  right: -2vw;
-  top: 8vh;
-  width: min(560px, 52vw);
-  height: auto;
-  opacity: calc(.42 * var(--v, 1));
-  pointer-events: none;
-}
-
-.plotVenue { stroke: rgba(255,255,255,.70); stroke-width: 1; }
-.plotArc   { stroke: rgba(255,255,255,.90); stroke-width: .8; }
-.plotRay   { stroke: rgba(255,255,255,.40); stroke-width: .6; stroke-dasharray: 3 5; }
-.plotNode  { fill: rgba(255,255,255,.85); }
-
 
 /* ── Sidechain, the conclusion ───────────────────────────────────────── */
 
@@ -499,12 +477,6 @@ h1, h2 { color: var(--fg); font-weight: inherit; }
   .chNote    { font-size: 15px; }
   .elements  { letter-spacing: 0.16em; font-size: 10px; }
 
-  .plot {
-    right: -18vw;
-    top: 6vh;
-    width: 86vw;
-    opacity: calc(.24 * var(--v, 1));
-  }
 }
 
 
@@ -526,9 +498,7 @@ h1, h2 { color: var(--fg); font-weight: inherit; }
   }
 
   .chInner::before,
-  .plot { opacity: 1; }
 
-  .plot { opacity: .22; }
 }
 
 .is-still .env-video { display: none; }
