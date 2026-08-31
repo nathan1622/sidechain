@@ -802,6 +802,35 @@ h1, h2 { color: var(--fg); font-weight: inherit; }
 }
 
 
+/* The way out of a legal page. Thin enough to belong to the hairline
+   language, with a hit area far bigger than the mark it draws. */
+.closeX {
+  position: fixed;
+  z-index: 3;
+  top: max(16px, 2.4vh);
+  right: max(14px, 1.8vw);
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  opacity: .62;
+  transition: opacity .25s ease;
+}
+
+.closeX:hover,
+.closeX:focus-visible { opacity: 1; outline: none; }
+
+.closeX svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: rgba(255,255,255,.9);
+  stroke-width: 1.1;
+}
+
+.closeX:focus-visible svg { stroke: #fff; }
+
+
 /* ═══ MOBILE ═════════════════════════════════════════════════════════
    Video off below 720px: a fixed, looping video behind a scrolling page
    is the single most expensive thing on a phone, and hero.jpg with the

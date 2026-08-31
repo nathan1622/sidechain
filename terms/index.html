@@ -15,7 +15,7 @@
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#000000" />
 
-    <link rel="stylesheet" href="/style.css?v=39" />
+    <link rel="stylesheet" href="/style.css?v=40" />
   </head>
 
   <body class="legalPage">
@@ -38,6 +38,17 @@
     <a class="backHome" href="/" aria-label="Back to the Sidechain home page">
       <img class="backMark" src="/logo.svg" width="40" height="40" alt="" />
       <span class="backWord">Sidechain</span>
+    </a>
+
+
+    <!-- Read-and-leave pages get a way out at the top right. It falls back to
+         the closing section of the home page, but if you arrived from
+         somewhere on this site it takes you back exactly there. Escape works
+         too. -->
+    <a class="closeX" href="/#close" aria-label="Close and go back">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M5 5 L19 19 M19 5 L5 19" />
+      </svg>
     </a>
 
     <main class="legal">
@@ -300,6 +311,27 @@
     </main>
 
     <script>
+      // Back to where they actually came from, when that was this site.
+      (function () {
+        var x = document.querySelector('.closeX');
+        if (!x) return;
+
+        function leave(e) {
+          var from = document.referrer;
+          if (from && from.indexOf(location.origin) === 0 && history.length > 1) {
+            if (e) e.preventDefault();
+            history.back();
+          }
+        }
+
+        x.addEventListener('click', leave);
+        document.addEventListener('keydown', function (e) {
+          if (e.key !== 'Escape') return;
+          if (document.referrer.indexOf(location.origin) === 0 && history.length > 1) history.back();
+          else location.href = '/#close';
+        });
+      }());
+
       (function () {
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
           document.documentElement.classList.add('is-still');
