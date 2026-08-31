@@ -36,6 +36,11 @@ body {
 
 a { color: inherit; text-decoration: none; }
 
+/* Say the colour rather than inheriting it: an inherited value loses to any
+   host stylesheet that colours headings, and this page is dark type away
+   from unreadable. */
+h1, h2 { color: var(--fg); font-weight: inherit; }
+
 
 /* ═══ FIXED ENVIRONMENT ══════════════════════════════════════════════ */
 
@@ -286,6 +291,7 @@ a { color: inherit; text-decoration: none; }
   font-weight: 400;
   line-height: 1.25;
   letter-spacing: -0.008em;
+  color: var(--fg);
   margin-top: clamp(14px, 2.4vh, 22px);
   text-shadow: 0 0 40px rgba(0,0,0,.85), 0 2px 12px rgba(0,0,0,.65);
 }
@@ -296,6 +302,7 @@ a { color: inherit; text-decoration: none; }
   font-weight: 500;
   line-height: 1.04;
   letter-spacing: -0.015em;
+  color: var(--fg);
   text-shadow: 0 0 60px rgba(0,0,0,.85), 0 2px 14px rgba(0,0,0,.65);
 }
 
@@ -352,6 +359,7 @@ a { color: inherit; text-decoration: none; }
   font-weight: 400;
   line-height: 1.14;
   letter-spacing: -0.012em;
+  color: var(--fg);
   text-shadow: 0 0 50px rgba(0,0,0,.85), 0 2px 12px rgba(0,0,0,.6);
 }
 
